@@ -926,7 +926,7 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
     
     <script>
         // ##################################################################
@@ -940,6 +940,11 @@
         // ###    - current_situation (text) ###
         // ###    - created_at (timestamp with time zone) ###
         // ### 4. Replace SUPABASE_URL and SUPABASE_ANON_KEY below ###
+        // ### ###
+        // ### SECURITY NOTE: These keys are visible to all users. ###
+        // ### The ANON_KEY is safe to expose as it only grants ###
+        // ### public access. Use Row Level Security (RLS) policies ###
+        // ### in Supabase to protect your data. ###
         // ##################################################################
         
         // Supabase Configuration
@@ -1100,8 +1105,7 @@
                     const userData = {
                         full_name: formData.get('userName'),
                         email: formData.get('userEmail'),
-                        current_situation: formData.get('userSituation'),
-                        created_at: new Date().toISOString()
+                        current_situation: formData.get('userSituation')
                     };
 
                     // Check if Supabase is properly configured
