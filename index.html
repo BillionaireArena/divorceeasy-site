@@ -972,6 +972,7 @@
 
         async function saveAIInteraction(type, question, response) {
             const userEmail = localStorage.getItem('userEmail');
+            if (!userEmail) return;
 
             try {
                 await supabase.from('ai_interactions').insert([{
@@ -988,6 +989,7 @@
 
         async function saveLawyerSearch(country, location) {
             const userEmail = localStorage.getItem('userEmail');
+            if (!userEmail) return;
 
             try {
                 await supabase.from('lawyer_searches').insert([{
