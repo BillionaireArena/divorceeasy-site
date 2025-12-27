@@ -935,9 +935,9 @@
         // ### 2. Create a new project ###
         // ### 3. Create a 'users' table with columns: ###
         // ###    - id (uuid, primary key, default: uuid_generate_v4()) ###
-        // ###    - full_name (text) ###
+        // ###    - name (text) ###
         // ###    - email (text) ###
-        // ###    - current_situation (text) ###
+        // ###    - situation (text) ###
         // ###    - created_at (timestamp with time zone) ###
         // ### 4. Replace SUPABASE_URL and SUPABASE_ANON_KEY below ###
         // ### ###
@@ -1308,12 +1308,12 @@
             
             document.getElementById('alimony-result').textContent = formatCurrency(finalAlimony);
             
-            // Save to Supabase
+            // Save to Supabase (non-blocking)
             saveCalculatorResult('alimony', {
                 yourIncome, partnerIncome, yearsMarried, hasChildren, currency: currentCurrency
             }, {
                 alimony: finalAlimony
-            });
+            }).catch(err => console.error('Failed to save alimony calculation:', err));
         }
 
         function calculateAssets() {
@@ -1340,13 +1340,13 @@
             document.getElementById('assets-your-share').textContent = `Your Share: ${formatCurrency(yourTotalShare)}`;
             document.getElementById('assets-partner-share').textContent = `Partner's Share: ${formatCurrency(partnerTotalShare)}`;
             
-            // Save to Supabase
+            // Save to Supabase (non-blocking)
             saveCalculatorResult('assets', {
                 totalAssets, individualPercent, residence: document.getElementById('assets-residence').value, currency: currentCurrency
             }, {
                 yourShare: yourTotalShare,
                 partnerShare: partnerTotalShare
-            });
+            }).catch(err => console.error('Failed to save asset calculation:', err));
         }
 
         function setChildrenCount(count, event) {
@@ -1384,12 +1384,12 @@
             
             document.getElementById('child-support-result').textContent = formatCurrency(supportObligation);
             
-            // Save to Supabase
+            // Save to Supabase (non-blocking)
             saveCalculatorResult('child_support', {
                 yourIncome, partnerIncome, childrenCount: selectedChildrenCount, currency: currentCurrency
             }, {
                 support: supportObligation
-            });
+            }).catch(err => console.error('Failed to save child support calculation:', err));
         }
 
         async function getAIRecommendations() {
@@ -1412,8 +1412,9 @@
             await callGemini(prompt, contentDiv, loadingDiv);
             resultsDiv.classList.remove('hidden');
             
-            // Save AI interaction to Supabase
-            saveAIInteraction('recommendations', JSON.stringify(calculationResults), contentDiv.innerHTML);
+            // Save AI interaction to Supabase (non-blocking)
+            saveAIInteraction('recommendations', JSON.stringify(calculationResults), contentDiv.innerHTML)
+                .catch(err => console.error('Failed to save AI interaction:', err));
         }
 
 
@@ -1460,8 +1461,9 @@
                 return;
             }
 
-            // Save lawyer search to Supabase
-            saveLawyerSearch(country, location);
+            // Save lawyer search to Supabase (non-blocking)
+            saveLawyerSearch(country, location)
+                .catch(err => console.error('Failed to save lawyer search:', err));
 
             const lawyers = legal_lawyerDatabase[location] || [];
 
@@ -1518,8 +1520,9 @@
             aiMessage.innerHTML = `<p class="text-gray-800"><strong class="text-indigo-600">AI Assistant:</strong> ${responseContainer.innerHTML}</p>`;
             chatBox.scrollTop = chatBox.scrollHeight;
             
-            // Save AI interaction to Supabase
-            saveAIInteraction('legal_help', question, responseContainer.innerHTML);
+            // Save AI interaction to Supabase (non-blocking)
+            saveAIInteraction('legal_help', question, responseContainer.innerHTML)
+                .catch(err => console.error('Failed to save AI interaction:', err));
         }
 
         // --- ASSET PROTECTION PAGE SCRIPT ---
