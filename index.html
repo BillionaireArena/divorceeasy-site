@@ -926,7 +926,7 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
     
     <script>
         // ##################################################################
@@ -954,6 +954,7 @@
         // Initialize Supabase client only if credentials are configured
         let supabase = null;
         if (typeof window.supabase !== 'undefined' && 
+            typeof window.supabase.createClient === 'function' &&
             SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL' && 
             SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
