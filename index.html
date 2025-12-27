@@ -3,1554 +3,492 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Divorceeasy - Complete Website</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <title>DivorceEasy - Simplified Divorce Solutions</title>
     <style>
-        /* General Styles */
-        body { 
-            font-family: 'Inter', sans-serif; 
-            scroll-behavior: smooth;
-            transition: background 0.5s ease-in-out;
-        }
-        .text-gradient {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .section-spacing { padding: 120px 0; }
-        
-        /* Page Section Visibility */
-        .page-section {
-            display: none;
-        }
-        .page-section.active {
-            display: block;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Modal Styles */
-        .modal {
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .modal.hidden {
-            opacity: 0;
-            transform: scale(0.95);
-            pointer-events: none;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
         }
 
-
-        /* --- Homepage Styles --- */
-        #home { background: #fafbfc; }
-        #home .gradient-bg { 
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-        }
-        #home .elegant-shadow { 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04);
-        }
-        #home .hero-animation { 
-            animation: float 8s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-        #home .glass-effect {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        /* --- Calculator Page Styles --- */
-        #calculators { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); }
-        #calculators .gradient-bg { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-        }
-        #calculators .calculator-card { 
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(40px);
-        }
-        #calculators .result-card {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
-            border: 2px solid rgba(14, 165, 233, 0.3);
-        }
-        #calculators .input-focus:focus {
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
-            border-color: rgba(99, 102, 241, 0.3);
-        }
-        .toggle-switch { position: relative; display: inline-block; width: 64px; height: 36px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 28px; width: 28px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #6366f1; }
-        input:checked + .slider:before { transform: translateX(28px); }
-
-        /* --- Dark Theme Pages (Assets, Mental Health) --- */
-        .dark-bg-body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #7209b7 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 20s ease-in-out infinite;
-        }
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        .playfair { font-family: 'Playfair Display', serif; }
-        .glass-morphism {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 32px;
-        }
-        .premium-button {
-            background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);
-        }
-        .premium-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-        .premium-select {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a8edea' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.75rem center;
-            background-repeat: no-repeat;
-            background-size: 1.25em 1.25em;
-        }
-        
-        /* --- Legal Help Page Styles --- */
-        #legal-help { background: linear-gradient(135deg, #fafbff 0%, #f0f4ff 50%, #e8f2ff 100%); }
-        #legal-help .gradient-bg { 
-            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #3730a3 50%, #1e40af 75%, #1d4ed8 100%);
-        }
-        #legal-help .service-card { 
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-        }
-        #legal-help .chat-message { animation: slideIn 0.5s ease-out; }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        #legal-help .loading-dots::after {
-            content: '.';
-            animation: dots 1.5s steps(3, end) infinite;
-        }
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
-
-        /* --- Asset Protection & Mental Health Styles --- */
-        #asset-protection .protection-output,
-        #mental-health .wellness-output {
-            display: none;
-        }
-        #asset-protection .protection-output.show,
-        #mental-health .wellness-output.show {
-            display: block;
-            animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(40px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        #asset-protection .stage-content {
-            display: none;
-        }
-        #asset-protection .stage-content.active {
-            display: block;
-        }
-        #asset-protection .asset-checkbox {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        #asset-protection .asset-checkbox:checked {
-            background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);
-            border-color: #11998e;
-        }
-        #asset-protection .asset-checkbox:checked::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            font-size: 12px;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
             font-weight: bold;
         }
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            padding: 1rem 1.5rem;
-            border-radius: 0.75rem;
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
             color: white;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            transition: opacity 0.3s;
         }
-        .notification.show {
-            opacity: 1;
-            transform: translateX(0);
+
+        .nav-links a:hover {
+            opacity: 0.8;
         }
-        .notification.success {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(5, 150, 105, 0.9) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 150px 0 100px;
+            text-align: center;
+            margin-top: 60px;
         }
-        .notification.error {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.9) 0%, rgba(220, 38, 38, 0.9) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
-        #asset-protection .progress-bar-container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            height: 8px;
-            overflow: hidden;
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .features {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .how-it-works {
+            padding: 80px 0;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .contact-form {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .contact-form h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
         }
-        #asset-protection .progress-bar {
-            background: linear-gradient(90deg, #2d1b69, #11998e, #667eea);
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
-            width: 0%;
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
         }
-        #mental-health .aurora-text {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 25%, #d299c2 50%, #fef9d3 75%, #85d8ce 100%);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 12s ease infinite;
+
+        .submit-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        #mental-health .text-shimmer {
-            background: linear-gradient(90deg, #a8edea, #fed6e3, #d299c2, #a8edea);
-            background-size: 400% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 4s ease-in-out infinite;
+
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .form-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .form-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .form-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .form-container {
+                padding: 2rem 1rem;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <nav class="glass-effect sticky top-0 z-50 border-b" style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05);">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center">
-                    <div class="text-2xl font-bold text-gradient">Divorceeasy</div>
-                </div>
-                <div class="hidden md:flex space-x-10">
-                    <a href="#home" class="nav-link text-gray-700 hover:text-indigo-600 transition-all duration-300 font-medium">Home</a>
-                    <a href="#calculators" class="nav-link text-gray-700 hover:text-indigo-600 transition-all duration-300 font-medium">Calculators</a>
-                    <a href="#legal-help" class="nav-link text-gray-700 hover:text-indigo-600 transition-all duration-300 font-medium">Legal Help</a>
-                    <a href="#asset-protection" class="nav-link text-gray-700 hover:text-indigo-600 transition-all duration-300 font-medium">Protect Assets</a>
-                    <a href="#mental-health" class="nav-link text-gray-700 hover:text-indigo-600 transition-all duration-300 font-medium">Mental Health</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button id="getStartedBtn" class="btn-primary text-white px-6 py-3 rounded-xl font-semibold elegant-shadow">Find Your Path Forward</button>
-                </div>
-            </div>
-        </div>
-    </nav>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">DivorceEasy</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#contact">Get Started</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <main>
-        <div id="home" class="page-section active">
-            <section class="gradient-bg text-white section-spacing relative">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-                    <div class="flex flex-col items-center gap-16">
-                        <div class="space-y-8">
-                            <h1 class="text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-center" style="white-space: nowrap;">
-                                You Don't Have to Navigate This Alone
-                            </h1>
-                            <p class="text-xl lg:text-2xl text-white/90 leading-relaxed max-w-2xl text-center ml-28" style="white-space: nowrap;">
-                                Private tools and guidance for one of life's hardest transitions. No judgment. Just clarity.
-                            </p>
-                        </div>
-                        <div class="hero-animation">
-                             </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-24 bg-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center">
-                        <h2 class="text-4xl font-bold text-gray-900 playfair">Everything You Need, When You Need It</h2>
-                        <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto"></p>
-                    </div>
-                    <div class="mt-20 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div class="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                            <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 inline-flex items-center justify-center mb-6">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Understand Your Finances</h3>
-                            <p class="text-gray-600">See clear estimates for support, assets, and expenses. No surprises, just numbers you can work with.</p>
-                        </div>
-                        <div class="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                            <div class="bg-purple-100 text-purple-600 rounded-full h-16 w-16 inline-flex items-center justify-center mb-6">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Get Answers, Not Runarounds</h3>
-                            <p class="text-gray-600">Talk to real lawyers or ask our AI assistant trained on thousands of cases. Your questions, answered.</p>
-                        </div>
-                        <div class="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                            <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 inline-flex items-center justify-center mb-6">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9m-9 9a9 9 0 00-9-9"></path></svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Protect What You've Built</h3>
-                            <p class="text-gray-600">Smart strategies to safeguard your assets, home, and future—before decisions become permanent.</p>
-                        </div>
-                        <div class="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                            <div class="bg-pink-100 text-pink-600 rounded-full h-16 w-16 inline-flex items-center justify-center mb-6">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Take Care of You</h3>
-                            <p class="text-gray-600">Evidence-based guidance for your emotional wellbeing. Because your mental health matters too.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-24 bg-gray-50">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center">
-                        <h2 class="text-4xl font-bold text-gray-900 playfair">Your Roadmap to Clarity</h2>
-                        <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto"></p>
-                    </div>
-                    <div class="mt-20 grid md:grid-cols-3 gap-12 text-center">
-                        <div class="relative">
-                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-white border-2 border-gray-200 h-16 w-16 rounded-full flex items-center justify-center text-2xl font-bold text-indigo-600">1</div>
-                            <div class="bg-white p-8 rounded-2xl shadow-lg">
-                                <h3 class="text-xl font-bold text-gray-900 mt-8 mb-2">Share What Feels Right</h3>
-                                <p class="text-gray-600">Tell us only what you're comfortable sharing. Everything is private and secure.</p>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-white border-2 border-gray-200 h-16 w-16 rounded-full flex items-center justify-center text-2xl font-bold text-indigo-600">2</div>
-                            <div class="bg-white p-8 rounded-2xl shadow-lg">
-                                <h3 class="text-xl font-bold text-gray-900 mt-8 mb-2">Explore at Your Own Pace</h3>
-                                <p class="text-gray-600">Browse tools, read guides, try calculators. No pressure, no judgment, no timeline.</p>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-white border-2 border-gray-200 h-16 w-16 rounded-full flex items-center justify-center text-2xl font-bold text-indigo-600">3</div>
-                            <div class="bg-white p-8 rounded-2xl shadow-lg">
-                                <h3 class="text-xl font-bold text-gray-900 mt-8 mb-2">Move Forward with Confidence</h3>
-                                <p class="text-gray-600">Use your insights to make decisions that feel right for you and your future.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-24 bg-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center">
-                        <h2 class="text-4xl font-bold text-gray-900 playfair">You're Not Alone in This</h2>
-                    </div>
-                    <div class="mt-16 grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                        <div class="bg-gray-50 p-8 rounded-2xl shadow-sm">
-                            <p class="text-gray-700 italic">"After 12 years of marriage, I had no idea where to start. Divorceeasy helped me understand what was fair without having to ask my friends or family. I could figure things out privately, at 2am when I couldn't sleep. That privacy meant everything."</p>
-                            <p class="mt-4 text-gray-600">— Sarah, California</p>
-                        </div>
-                        <div class="bg-gray-50 p-8 rounded-2xl shadow-sm">
-                            <p class="text-gray-700 italic">"I'm a father of two and was terrified about custody. The child support calculator helped me see real numbers instead of worst-case scenarios in my head. It gave me the confidence to talk to my lawyer from a place of knowledge, not fear."</p>
-                            <p class="mt-4 text-gray-600">— Marcus, Texas</p>
-                        </div>
-                        <div class="bg-gray-50 p-8 rounded-2xl shadow-sm">
-                            <p class="text-gray-700 italic">"The mental health resources surprised me. I didn't expect to need them, but having someone (even an AI) acknowledge what I was feeling without judgment... it helped me get through the hardest weeks."</p>
-                            <p class="mt-4 text-gray-600">— Priya, London</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="calculators" class="page-section">
-            <section class="gradient-bg text-white py-20">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10">
-                    <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                        See Your Numbers, Find Your Clarity
-                    </h1>
-                    <p class="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-                        Get estimates based on your region's guidelines. These are starting points for conversations with your lawyer, not legal advice.
-                    </p>
-                     <div class="mt-8 flex justify-center">
-                         <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                             <div class="flex items-center space-x-4">
-                                 <span class="text-white/90 font-medium">Select Currency / Region:</span>
-                                 <div class="flex space-x-2">
-                                     <button onclick="setCurrency('USD', '$', event)" class="currency-btn bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-xl font-semibold transition-all duration-300 border border-white/30">
-                                         USD ($)
-                                     </button>
-                                     <button onclick="setCurrency('INR', '₹', event)" class="currency-btn active bg-white text-indigo-600 px-4 py-2 rounded-xl font-semibold transition-all duration-300">
-                                         INR (₹)
-                                     </button>
-                                     <button onclick="setCurrency('EUR', '€', event)" class="currency-btn bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-xl font-semibold transition-all duration-300 border border-white/30">
-                                         EUR (€)
-                                     </button>
-                                     <button onclick="setCurrency('GBP', '£', event)" class="currency-btn bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-xl font-semibold transition-all duration-300 border border-white/30">
-                                         GBP (£)
-                                     </button>
-                                 </div>
-                             </div>
-                         </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="alimony" class="py-20 bg-white">
-                <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                    <div class="calculator-card rounded-3xl p-8 lg:p-12">
-                        <div class="flex items-center mb-8">
-                            <div>
-                                <h2 class="text-3xl font-bold text-gray-900 mb-2">Alimony Estimator</h2>
-                                <p class="text-gray-600 text-lg">Calculate potential spousal support based on income and marriage duration</p>
-                            </div>
-                        </div>
-                        <div class="grid lg:grid-cols-2 gap-12">
-                            <div class="space-y-6">
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-800 mb-3">Your Monthly Income</label>
-                                    <div class="relative">
-                                        <span class="currency-symbol absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
-                                        <input type="text" id="alimony-your-income" placeholder="75,000" class="input-focus w-full pl-8 pr-4 py-4 border-2 border-gray-200 rounded-xl text-lg font-medium">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-800 mb-3">Partner's Monthly Income</label>
-                                    <div class="relative">
-                                        <span class="currency-symbol absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
-                                        <input type="text" id="alimony-partner-income" placeholder="45,000" class="input-focus w-full pl-8 pr-4 py-4 border-2 border-gray-200 rounded-xl text-lg font-medium">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-800 mb-3">Years Married</label>
-                                    <input type="number" id="alimony-years-married" placeholder="8" class="input-focus w-full px-4 py-4 border-2 border-gray-200 rounded-xl text-lg font-medium">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-800 mb-4">Any Children?</label>
-                                    <div class="flex items-center space-x-4">
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" id="alimony-has-children">
-                                            <span class="slider"></span>
-                                        </label>
-                                        <span class="text-gray-700 font-medium">Yes, we have children</span>
-                                    </div>
-                                </div>
-                                <button onclick="calculateAlimony()" class="btn-primary w-full text-white py-4 rounded-xl font-bold text-lg">
-                                    Calculate Alimony
-                                </button>
-                            </div>
-                            <div class="result-card rounded-2xl p-8 flex flex-col justify-center">
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Estimated Monthly Alimony</h3>
-                                <div id="alimony-result" class="text-4xl font-bold text-blue-600 mb-2 text-center">Enter values to calculate</div>
-                                <p id="alimony-result-words" class="text-sm text-gray-500 text-center mt-1 h-4"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="assets" class="py-20 bg-gray-50">
-                 <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                     <div class="calculator-card rounded-3xl p-8 lg:p-12">
-                         <h2 class="text-3xl font-bold text-gray-900 mb-2">Asset Split Estimator</h2>
-                         <p class="text-gray-600 text-lg mb-8">Estimate fair division of marital property and assets</p>
-                         <div class="grid lg:grid-cols-2 gap-12">
-                              <div class="space-y-6">
-                                 <div>
-                                     <label class="block text-sm font-semibold text-gray-800 mb-3">Total Marital Assets</label>
-                                     <div class="relative">
-                                         <span class="currency-symbol absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
-                                         <input type="text" id="assets-total" placeholder="25,00,000" class="input-focus w-full pl-8 pr-4 py-4 border-2 border-gray-200 rounded-xl text-lg font-medium">
-                                     </div>
-                                 </div>
-                                 <div>
-                                     <label class="block text-sm font-semibold text-gray-800 mb-3">% of Assets Owned Individually</label>
-                                     <div class="relative">
-                                         <input type="range" id="assets-individual" min="0" max="100" value="25" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                                         <div class="flex justify-between text-sm text-gray-500 mt-2">
-                                             <span>0%</span>
-                                             <span id="assets-individual-display" class="font-medium text-indigo-600">25%</span>
-                                             <span>100%</span>
-                                         </div>
-                                     </div>
-                                 </div>
-                                  <div>
-                                     <label class="block text-sm font-semibold text-gray-800 mb-3">Primary Residence Status</label>
-                                     <select id="assets-residence" class="input-focus w-full px-4 py-4 border-2 border-gray-200 rounded-xl bg-white text-lg font-medium">
-                                         <option value="joint">Joint ownership</option>
-                                         <option value="yours">Your name only</option>
-                                         <option value="partners">Partner's name only</option>
-                                         <option value="rented">Rented property</option>
-                                     </select>
-                                 </div>
-                                 <button onclick="calculateAssets()" class="btn-primary w-full text-white py-4 rounded-xl font-bold text-lg">Estimate Split</button>
-                             </div>
-                             <div class="result-card rounded-2xl p-8 flex flex-col justify-center">
-                                 <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Suggested Asset Division</h3>
-                                 <div id="assets-your-share" class="text-2xl font-bold text-green-600">Your Share: Enter values</div>
-                                 <p id="assets-your-share-words" class="text-sm text-gray-500 mt-1 h-4"></p>
-                                 <div id="assets-partner-share" class="text-2xl font-bold text-blue-600 mt-4">Partner's Share: Enter values</div>
-                                 <p id="assets-partner-share-words" class="text-sm text-gray-500 mt-1 h-4"></p>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-            </section>
-
-            <section id="child-support" class="py-20 bg-white">
-                 <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                     <div class="calculator-card rounded-3xl p-8 lg:p-12">
-                         <h2 class="text-3xl font-bold text-gray-900 mb-2">Child Support Estimator</h2>
-                         <p class="text-gray-600 text-lg mb-8">Calculate monthly support based on custody and income</p>
-                          <div class="grid lg:grid-cols-2 gap-12">
-                             <div class="space-y-6">
-                                 <div>
-                                     <label class="block text-sm font-semibold text-gray-800 mb-3">Your Monthly Income</label>
-                                     <div class="relative">
-                                         <span class="currency-symbol absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
-                                         <input type="text" id="child-your-income" placeholder="75,000" class="input-focus w-full pl-8 pr-4 py-4 border-2 border-gray-200 rounded-xl text-lg font-medium">
-                                     </div>
-                                 </div>
-                                 <div>
-                                     <label class="block text-sm font-semibold text-gray-800 mb-3">Partner's Monthly Income</label>
-                                     <div class="relative">
-                                         <span class="currency-symbol absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
-                                         <input type="text" id="child-partner-income" placeholder="45,000" class="input-focus w-full pl-8 pr-4 py-4 border-2 border-gray-200 rounded-xl text-lg font-medium">
-                                     </div>
-                                 </div>
-                                 <div>
-                                     <label class="block text-sm font-semibold text-gray-800 mb-3">Number of Children</label>
-                                     <div class="flex space-x-4">
-                                         <button onclick="setChildrenCount(1, event)" class="child-count-btn w-12 h-12 border-2 border-indigo-500 bg-indigo-50 rounded-xl font-semibold">1</button>
-                                         <button onclick="setChildrenCount(2, event)" class="child-count-btn w-12 h-12 border-2 border-gray-200 rounded-xl font-semibold">2</button>
-                                         <button onclick="setChildrenCount(3, event)" class="child-count-btn w-12 h-12 border-2 border-gray-200 rounded-xl font-semibold">3</button>
-                                         <button onclick="setChildrenCount(4, event)" class="child-count-btn w-12 h-12 border-2 border-gray-200 rounded-xl font-semibold">4+</button>
-                                     </div>
-                                 </div>
-                                 <button onclick="calculateChildSupport()" class="btn-primary w-full text-white py-4 rounded-xl font-bold text-lg">Estimate Support</button>
-                             </div>
-                             <div class="result-card rounded-2xl p-8 flex flex-col justify-center">
-                                 <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Monthly Child Support</h3>
-                                 <div id="child-support-result" class="text-4xl font-bold text-purple-600 mb-2 text-center">Enter values to calculate</div>
-                                 <p id="child-support-result-words" class="text-sm text-gray-500 text-center mt-1 h-4"></p>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-            </section>
-
-            <section id="ai-recommendations" class="py-20 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-                <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-4xl font-bold text-white mb-4">✨ AI-Powered Recommendations</h2>
-                        <p class="text-xl text-gray-300 max-w-3xl mx-auto">Get personalized insights and recommendations based on your calculations.</p>
-                    </div>
-                    <div class="calculator-card rounded-3xl p-8 lg:p-12 bg-white/95 backdrop-blur-xl">
-                        <div class="space-y-8">
-                             <button onclick="getAIRecommendations()" id="ai-generate-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-                                 <span class="flex items-center justify-center">
-                                     ✨ Get Personalized Insights
-                                 </span>
-                             </button>
-                             <div id="ai-loading" class="hidden text-center text-gray-600 font-medium">
-                                 <div role="status" class="flex justify-center items-center space-x-2">
-                                     <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
-                                     <span>AI is generating recommendations...</span>
-                                 </div>
-                             </div>
-                            <div id="ai-results" class="hidden prose prose-lg max-w-none text-gray-800 bg-indigo-50 p-6 rounded-2xl border border-indigo-200">
-                                <h4 class="text-xl font-bold text-indigo-800">Your AI-Powered Financial Strategy:</h4>
-                                <div id="ai-content"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="legal-help" class="page-section">
-            <section class="gradient-bg text-white py-16">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-                    <h1 class="text-4xl lg:text-6xl font-bold mb-6">
-                        Get Answers from People Who Understand
-                    </h1>
-                    <p class="text-xl text-white/90 max-w-3xl mx-auto mb-8">
-                        Connect with experienced lawyers, download legal templates, or get instant AI assistance for your family law questions.
-                    </p>
-                </div>
-            </section>
-            <section class="py-20 bg-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Connect with a Family Law Attorney</h2>
-                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Browse experienced lawyers in your area. See their background, read reviews, and reach out when you're ready. No obligation, no pressure.</p>
-                    </div>
-                    <div class="grid lg:grid-cols-2 gap-12">
-                        <div class="service-card rounded-3xl p-8">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-6">Tell Us What You Need</h3>
-                            <div class="space-y-6">
-                                <div class="grid md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-800 mb-3">Country</label>
-                                        <select id="legal-countrySelect" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white">
-                                            <option value="us"> United States</option>
-                                            <option value="uk"> United Kingdom</option>
-                                            <option value="ca"> Canada</option>
-                                            <option value="au"> Australia</option>
-                                            <option value="in"> India</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-800 mb-3">City/State</label>
-                                        <select id="legal-locationSelect" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white">
-                                            <option value="">Select your location</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button id="findLawyersBtn" class="btn-primary w-full text-white py-4 rounded-xl font-bold text-lg">
-                                    Find Lawyers Near Me
-                                </button>
-                            </div>
-                        </div>
-                        <div id="lawyerResults" class="space-y-6">
-                            <div class="bg-gray-50 rounded-2xl p-6 text-center">
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Ready to Find Your Lawyer?</h3>
-                                <p class="text-gray-600">Fill out the form to see matching lawyers in your area.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="py-20 bg-gray-50">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Or Start with Our AI Assistant</h2>
-                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Not ready to talk to a lawyer? Get answers to common questions 24/7. Our AI has been trained on thousands of family law cases and can point you in the right direction.</p>
-                    </div>
-                    <div class="max-w-6xl mx-auto">
-                        <div class="service-card rounded-3xl p-8 lg:p-12">
-                            <div id="legal-chatMessages" class="space-y-4 mb-6 max-h-96 overflow-y-auto p-4 bg-gray-50 rounded-xl">
-                                <div class="chat-message">
-                                    <p class="text-gray-800"><strong class="text-indigo-600">AI Assistant:</strong> Hello! How can I help you with your family law questions today? Please remember, this is for informational purposes only and not legal advice.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-4">
-                                <textarea id="legal-questionInput" placeholder="Ask your legal question" class="w-full px-4 py-4 border-2 border-gray-200 rounded-xl resize-none"></textarea>
-                                <button id="legal-askAiBtn" class="btn-primary text-white py-4 px-6 rounded-xl font-bold text-lg">
-                                    Send
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="asset-protection" class="page-section">
-            <section class="relative py-32 overflow-hidden text-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10">
-                    <div class="mb-8">
-                        <div class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full border border-white/20 mb-8">
-                            <svg class="w-5 h-5 text-blue-300 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                            <span class="font-medium">AI-Powered Asset Protection</span>
-                        </div>
-                    </div>
-                    <h1 class="text-6xl lg:text-8xl font-bold mb-8 playfair leading-tight">
-                        Smart Moves to Protect Your Future
-                    </h1>
-                    <p class="text-2xl text-white/90 max-w-4xl mx-auto mb-16 leading-relaxed">
-                        Every situation is unique. Answer a few questions to get personalized strategies based on your location, timeline, and assets.
-                    </p>
-                </div>
-            </section>
-
-            <section class="py-32 relative text-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center mb-20">
-                        <h2 class="text-5xl font-bold mb-6 playfair">Select Your Situation</h2>
-                        <p class="text-2xl text-white/80 max-w-4xl mx-auto">Get personalized asset protection strategies based on your unique circumstances</p>
-                    </div>
-                    <div class="glass-card p-12 lg:p-16 relative overflow-hidden">
-                        <div class="grid lg:grid-cols-2 gap-16">
-                            <div class="space-y-8">
-                                <div>
-                                    <label class="block text-sm font-semibold text-white/90 mb-4">Country/Jurisdiction</label>
-                                    <select id="asset-countrySelect" class="premium-select premium-input w-full px-6 py-4 text-white rounded-xl">
-                                        <option value="">Select your country</option>
-                                        <option value="us">United States</option>
-                                        <option value="uk">United Kingdom</option>
-                                        <option value="in">India</option>
-                                        <option value="ca">Canada</option>
-                                        <option value="au">Australia</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-white/90 mb-4">Relationship Stage</label>
-                                    <select id="asset-stageSelect" class="premium-select premium-input w-full px-6 py-4 text-white rounded-xl">
-                                        <option value="">Where are you now?</option>
-                                        <option value="before-marriage">Before Marriage</option>
-                                        <option value="during-marriage">During Marriage – Buying Property</option>
-                                        <option value="just-filed">Just Filed for Divorce</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-white/90 mb-6">Asset Types (Select all that apply)</label>
-                                    <div class="grid md:grid-cols-2 gap-4">
-                                        <label class="flex items-center space-x-4 p-4 glass-card cursor-pointer hover:bg-white/10 transition-all rounded-xl"><input type="checkbox" class="asset-checkbox" value="real-estate"><span class="font-medium">Real Estate</span></label>
-                                        <label class="flex items-center space-x-4 p-4 glass-card cursor-pointer hover:bg-white/10 transition-all rounded-xl"><input type="checkbox" class="asset-checkbox" value="gold-jewelry"><span class="font-medium">Gold & Jewelry</span></label>
-                                        <label class="flex items-center space-x-4 p-4 glass-card cursor-pointer hover:bg-white/10 transition-all rounded-xl"><input type="checkbox" class="asset-checkbox" value="investments"><span class="font-medium">Shares & Mutual Funds</span></label>
-                                        <label class="flex items-center space-x-4 p-4 glass-card cursor-pointer hover:bg-white/10 transition-all rounded-xl"><input type="checkbox" class="asset-checkbox" value="business"><span class="font-medium">Business Ownership</span></label>
-                                    </div>
-                                </div>
-                                <button id="generatePlanBtn" class="premium-button w-full text-white py-6 font-bold text-xl rounded-xl">Generate Asset Protection Plan</button>
-                                <div class="progress-bar-container hidden" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
-                            </div>
-                            <div>
-                                <div id="protectionOutput" class="protection-output">
-                                    <h4 class="text-2xl font-bold mb-4 playfair">Your Asset Protection Strategy</h4>
-                                    <p id="protectionText" class="text-white/90 text-lg mb-6 leading-relaxed"></p>
-                                    <div id="strategy-list" class="space-y-6">
-                                    </div>
-                                    <div id="aiFollowUpSection" class="mt-8 border-t border-white/20 pt-6 hidden">
-                                        <h5 class="text-xl font-bold text-white mb-4 playfair">Have a Follow-up Question?</h5>
-                                        <p class="text-white/80 mb-4">Ask our AI for more details about your generated strategy.</p>
-                                        <textarea id="aiFollowUpQuestion" class="premium-input w-full p-4 text-white rounded-xl h-24" placeholder="e.g., 'Can you explain more about a QPRT?'"></textarea>
-                                        <button id="askFollowUpBtn" class="btn-primary w-full text-white py-3 rounded-xl font-bold text-lg mt-4">Ask AI Assistant</button>
-                                        <div id="aiFollowUpAnswer" class="mt-4 p-4 bg-white/10 rounded-xl text-white/90 hidden"></div>
-                                    </div>
-                                </div>
-                                <div class="glass-card p-6 border-2 border-yellow-400/30 mt-8">
-                                    <p class="text-yellow-300 font-semibold mb-2">Important Note</p>
-                                    <p class="text-white/80 text-sm">Our recommendations are based on common legal strategies in your jurisdiction and insights from financial advisors. They're a starting point for conversations with your own professionals.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="mental-health" class="page-section">
-            <section class="relative py-32 overflow-hidden text-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10">
-                    <h1 class="text-6xl lg:text-8xl font-bold mb-8 playfair leading-tight">
-                        You're Going Through Something Hard. We See You.
-                    </h1>
-                    <p class="text-2xl text-white/90 max-w-4xl mx-auto mb-16 leading-relaxed">
-                        Divorce and separation are among life's most stressful experiences. Whether you're feeling lost, angry, relieved, or all of the above—your feelings are valid. You don't have to face this alone.
-                    </p>
-                </div>
-            </section>
-
-            <section class="py-32 relative text-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center mb-20">
-                        <h2 class="text-5xl font-bold mb-6 playfair">Start with Smart Support</h2>
-                        <p class="text-2xl text-white/80 max-w-4xl mx-auto">While we're not therapists, we can point you toward evidence-based strategies that have helped others through similar experiences. Think of this as a compassionate starting point, not a replacement for professional support.</p>
-                    </div>
-
-                    <div class="glass-card p-12 lg:p-16 relative overflow-hidden">
-                        <div class="grid lg:grid-cols-2 gap-16">
-                            <div class="space-y-8">
-                                <h3 class="text-3xl font-bold text-white playfair">This helps us personalize resources</h3>
-                                <div class="grid md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-white/90 mb-4">Current Status</label>
-                                        <select id="mh-statusSelect" class="premium-select premium-input w-full px-6 py-4 text-white rounded-xl">
-                                            <option value="">Where are you now?</option>
-                                            <option value="confused">Confused about my relationship</option>
-                                            <option value="separated">Recently Separated</option>
-                                            <option value="divorced">Divorced</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-white/90 mb-4">Primary Emotion</label>
-                                        <select id="mh-emotionSelect" class="premium-select premium-input w-full px-6 py-4 text-white rounded-xl">
-                                            <option value="">What do you feel most?</option>
-                                            <option value="angry">Angry</option>
-                                            <option value="lonely">Lonely</option>
-                                            <option value="anxious">Anxious</option>
-                                            <option value="grieving">Grieving</option>
-                                            <option value="free">Free</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button id="generateWellnessBtn" class="premium-button w-full text-white py-6 font-bold text-xl rounded-xl">Generate AI Wellness Suggestions</button>
-                            </div>
-
-                            <div>
-                                <div id="wellnessOutput" class="wellness-output">
-                                    <h4 class="text-2xl font-bold text-white mb-4 playfair">Your Wellness Suggestions</h4>
-                                    <p id="wellnessText" class="text-white/90 text-lg mb-6 leading-relaxed"></p>
-                                    <div class="space-y-4">
-                                        <p id="suggestion1" class="text-white/90 text-lg p-4 bg-white/10 rounded-xl"></p>
-                                        <p id="suggestion2" class="text-white/90 text-lg p-4 bg-white/10 rounded-xl"></p>
-                                        <p id="suggestion3" class="text-white/90 text-lg p-4 bg-white/10 rounded-xl"></p>
-                                    </div>
-                                    <div id="mh-aiFollowUpSection" class="mt-8 border-t border-white/20 pt-6 hidden">
-                                        <h5 class="text-xl font-bold text-white mb-4 playfair">Discuss Further</h5>
-                                        <p class="text-white/80 mb-4">Ask our AI for more details about these wellness strategies.</p>
-                                        <textarea id="mh-aiFollowUpQuestion" class="premium-input w-full p-4 text-white rounded-xl h-24" placeholder="e.g., 'How do I start journaling?'"></textarea>
-                                        <button id="mh-askFollowUpBtn" class="btn-primary w-full text-white py-3 rounded-xl font-bold text-lg mt-4">Ask AI Assistant</button>
-                                        <div id="mh-aiFollowUpAnswer" class="mt-4 p-4 bg-white/10 rounded-xl text-white/90 hidden"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-32 relative text-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold mb-4 playfair">Mental Health Coverage</h2>
-                        <p class="text-xl text-white/80 max-w-3xl mx-auto">Many insurance plans cover therapy. Check if yours includes mental health benefits.</p>
-                    </div>
-                    <div class="glass-card p-12">
-                        <div class="flex justify-center items-center gap-8 md:gap-16 flex-wrap">
-                            <a href="https://www.bupa.com/" target="_blank" class="opacity-70 hover:opacity-100 transition-opacity duration-300" title="Bupa">
-                                <img src="https://placehold.co/180x60/ffffff/000000?text=BUPA" alt="Bupa Logo">
-                            </a>
-                            <a href="https://www.axa.com/" target="_blank" class="opacity-70 hover:opacity-100 transition-opacity duration-300" title="AXA">
-                                <img src="https://placehold.co/150x60/ffffff/000000?text=AXA" alt="AXA Logo">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <div id="getStartedModal" class="modal fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full m-4 relative transform transition-all">
-            <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <section class="hero">
+        <div class="container">
+            <h1>Simplify Your Divorce Process</h1>
+            <p>Navigate your divorce with confidence and ease</p>
+            <button class="cta-button" onclick="document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })">
+                Get Started Today
             </button>
-            <h2 class="text-3xl font-bold text-gray-800 mb-2 playfair">Welcome. Let's Find What You Need.</h2>
-            <p class="text-gray-600 mb-4">We've built this platform to be as private and pressure-free as possible. You can explore everything without creating an account, but if you'd like to save your progress, we'll need just a couple of details.</p>
-            <p class="text-gray-500 text-sm mb-6">We'll never share your information, and you can delete your account anytime. You're in control.</p>
-            <form id="getStartedForm" class="space-y-4">
-                <div>
-                    <label for="userName" class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
-                    <input type="text" id="userName" name="userName" placeholder="e.g., Alex Doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900 placeholder-gray-500">
-                </div>
-                <div>
-                    <label for="userEmail" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-                    <input type="email" id="userEmail" name="userEmail" placeholder="you@example.com" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900 placeholder-gray-500">
-                </div>
-                <div>
-                    <label for="userSituation" class="block text-sm font-semibold text-gray-700 mb-2">Your Current Situation</label>
-                    <select id="userSituation" name="userSituation" required class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900">
-                        <option value="">Please select one...</option>
-                        <option value="planning-marriage">Planning for Marriage (Prenup)</option>
-                        <option value="considering-divorce">Considering Divorce/Separation</option>
-                        <option value="in-proceedings">In Divorce Proceedings</option>
-                        <option value="post-divorce">Post-Divorce Planning</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-bold text-lg">Submit & Continue</button>
-            </form>
         </div>
-    </div>
+    </section>
 
-    <footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 text-white relative overflow-hidden">
-        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20">
-            <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
-                <div>
-                    <h3 class="text-2xl font-bold text-gradient mb-4">Divorceeasy</h3>
-                    <p class="text-white/70 leading-relaxed">Providing clear, compassionate guidance for life's most challenging transitions. Your journey to clarity starts here.</p>
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Why Choose DivorceEasy?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎯 Simple Process</h3>
+                    <p>Our streamlined approach makes divorce paperwork straightforward and stress-free.</p>
                 </div>
-                <div>
-                    <h4 class="text-lg font-semibold text-white/90 mb-4">Quick Links</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-white/70 hover:text-white transition">About Us</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition">Contact</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition">Privacy Policy</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition">Terms of Service</a></li>
-                    </ul>
+                <div class="feature-card">
+                    <h3>💰 Affordable Solutions</h3>
+                    <p>Save thousands compared to traditional divorce attorneys while getting expert guidance.</p>
                 </div>
-                <div>
-                    <h4 class="text-lg font-semibold text-white/90 mb-4">Follow Us</h4>
-                    <div class="flex justify-center md:justify-start space-x-6">
-                        <a href="#" class="text-white/70 hover:text-white transition transform hover:scale-110">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.59 0 0 .59 0 1.325v21.35C0 23.41.59 24 1.325 24H12.82v-9.29h-3.128v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h5.713c.735 0 1.325-.59 1.325-1.325V1.325C24 .59 23.41 0 22.675 0z"/></svg>
-                        </a>
-                        <a href="#" class="text-white/70 hover:text-white transition transform hover:scale-110">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.223.085a4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
-                        </a>
-                        <a href="#" class="text-white/70 hover:text-white transition transform hover:scale-110">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
-                        </a>
-                        <a href="#" class="text-white/70 hover:text-white transition transform hover:scale-110">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
-                        </a>
+                <div class="feature-card">
+                    <h3>⚡ Fast Results</h3>
+                    <p>Complete your divorce faster with our efficient process and expert support.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 Confidential & Secure</h3>
+                    <p>Your privacy is our priority. All information is kept strictly confidential.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📋 Document Preparation</h3>
+                    <p>We handle all the paperwork so you don't have to worry about legal forms.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>👥 Expert Support</h3>
+                    <p>Get guidance from experienced professionals every step of the way.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Fill Out Form</h3>
+                    <p>Provide your basic information and divorce situation details.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Get Consultation</h3>
+                    <p>We'll review your case and provide personalized recommendations.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Complete Process</h3>
+                    <p>We guide you through each step until your divorce is finalized.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-form">
+        <div class="container">
+            <h2>Start Your Journey Today</h2>
+            <div class="form-container">
+                <form id="divorceForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="situation">Tell us about your situation *</label>
+                        <textarea id="situation" name="situation" required placeholder="Please describe your current situation..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-button" id="submitBtn">
+                        Submit
+                    </button>
+                    <div id="formMessage" class="form-message"></div>
+                </form>
             </div>
-            <div class="border-t border-white/20 mt-12 pt-8 text-center text-white/60 text-sm">
-                <p>&copy; 2025 Divorceeasy. All rights reserved.</p>
-            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 DivorceEasy. All rights reserved.</p>
+            <p>Simplifying the divorce process, one step at a time.</p>
         </div>
     </footer>
 
-
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
-        // --- GEMINI API CALL FUNCTION ---
-        async function callGemini(prompt, elementToUpdate, loadingElement) {
-            if (loadingElement) loadingElement.classList.remove('hidden');
-            if (elementToUpdate) elementToUpdate.classList.add('hidden');
-            
-            // ##################################################################
-            // ### GET YOUR FREE GEMINI API KEY: https://aistudio.google.com/app/apikey ###
-            // ### PASTE YOUR API KEY IN THE LINE BELOW ###
-            // ##################################################################
-            const apiKey = "AIzaSyBx2NJi558kdXXxGz37CslT-UL24FLZ_4g"; // Replace with your own key from https://aistudio.google.com/app/apikey
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://lbdaagfdfmeqitwijilr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxiZGFhZ2ZkZm1lcWl0d2lqaWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MjQ3MzcsImV4cCI6MjA4MjQwMDczN30.5NV-eB2XxwJ6RhDdia3pPu4sW_m3VGW5eqyMI48EJLo';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            if (!apiKey || apiKey === "YOUR_API_KEY_HERE") {
-                console.error("Gemini API key is missing.");
-                const errorMessage = "<strong>AI Feature Needs Setup:</strong> Get your free API key from <a href='https://aistudio.google.com/app/apikey' target='_blank' class='text-indigo-600 underline'>Google AI Studio</a> and add it to the script.";
-                if(elementToUpdate) elementToUpdate.innerHTML = errorMessage;
-                if (loadingElement) loadingElement.classList.add('hidden');
-                if(elementToUpdate) elementToUpdate.classList.remove('hidden');
+        // Form submission handler
+        const form = document.getElementById('divorceForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formMessage = document.getElementById('formMessage');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const situation = document.getElementById('situation').value.trim();
+
+            // Validate form
+            if (!fullName || !email || !situation) {
+                showMessage('Please fill in all required fields.', 'error');
                 return;
             }
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-            
-            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+            // Set loading state
+            setLoadingState(true);
+            hideMessage();
 
             try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+                // Insert data into Supabase
+                const { data, error } = await supabase
+                    .from('users')
+                    .insert([
+                        {
+                            full_name: fullName,
+                            email: email,
+                            situation: situation
+                        }
+                    ])
+                    .select();
 
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-                const result = await response.json();
-                
-                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
-                    let text = result.candidates[0].content.parts[0].text;
-                    // Basic Markdown to HTML conversion
-                    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
-                    text = text.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Italics
-                    text = text.replace(/^- (.*$)/gm, '<li>$1</li>'); // List items
-                    text = text.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>'); // Wrap in UL
-                    text = text.replace(/\n/g, '<br>'); // Newlines
-                    elementToUpdate.innerHTML = text;
-                } else {
-                    elementToUpdate.textContent = 'Sorry, the AI could not generate a response.';
-                    console.log("Unexpected API response structure:", result);
+                if (error) {
+                    throw error;
                 }
+
+                // Success state
+                showMessage('Thank you! Your information has been submitted successfully. We\'ll contact you soon.', 'success');
+                form.reset();
+                
             } catch (error) {
-                console.error("Error calling Gemini API:", error);
-                elementToUpdate.textContent = 'An error occurred while contacting the AI.';
+                // Error state
+                console.error('Error submitting form:', error);
+                showMessage('An error occurred while submitting your information. Please try again.', 'error');
             } finally {
-                if (loadingElement) loadingElement.classList.add('hidden');
-                if (elementToUpdate) elementToUpdate.classList.remove('hidden');
+                // Reset loading state
+                setLoadingState(false);
             }
-        }
-
-        // --- NOTIFICATION UTILITY ---
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-
-            // Trigger animation
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 100);
-
-            // Hide and remove after 5 seconds
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 500);
-            }, 5000);
-        }
-
-        // --- NAVIGATION LOGIC ---
-        document.addEventListener('DOMContentLoaded', function() {
-            const navLinks = document.querySelectorAll('.nav-link');
-            const pageSections = document.querySelectorAll('.page-section');
-
-            function showSection(targetId) {
-                const isDarkSection = targetId === 'asset-protection' || targetId === 'mental-health';
-                
-                document.body.classList.toggle('dark-bg-body', isDarkSection);
-                if (!isDarkSection) {
-                    document.body.style.background = ''; // Revert to default light bg
-                }
-
-                pageSections.forEach(section => {
-                    section.classList.toggle('active', section.id === targetId);
-                });
-                window.scrollTo(0, 0);
-            }
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    showSection(targetId);
-                    window.history.pushState(null, '', '#' + targetId);
-                });
-            });
-
-            const initialHash = window.location.hash.substring(1);
-            showSection(document.getElementById(initialHash) ? initialHash : 'home');
-
-            // Initialize all page-specific scripts
-            initModal();
-            initCalculatorScript();
-            initLegalHelpScript();
-            initAssetProtectionScript();
-            initMentalHealthScript();
         });
 
-        // --- MODAL SCRIPT ---
-        function initModal() {
-            const getStartedBtn = document.getElementById('getStartedBtn');
-            const modal = document.getElementById('getStartedModal');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const form = document.getElementById('getStartedForm');
-
-            if (getStartedBtn && modal && closeModalBtn && form) {
-                getStartedBtn.addEventListener('click', () => {
-                    modal.classList.remove('hidden');
-                });
-
-                const closeModal = () => {
-                    modal.classList.add('hidden');
-                };
-
-                closeModalBtn.addEventListener('click', closeModal);
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        closeModal();
-                    }
-                });
-
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(form);
-                    const userData = Object.fromEntries(formData.entries());
-                    console.log('User Details:', userData);
-                    // Here you would typically send this data to a server
-                    closeModal();
-                    showNotification('Thank you! Your information has been received.', 'success');
-                });
-            }
+        // Helper function to set loading state
+        function setLoadingState(isLoading) {
+            submitBtn.disabled = isLoading;
+            submitBtn.textContent = isLoading ? 'Submitting...' : 'Submit';
         }
 
+        // Helper function to show message
+        function showMessage(message, type) {
+            formMessage.textContent = message;
+            formMessage.className = 'form-message ' + type;
+            formMessage.style.display = 'block';
+        }
 
-        // --- PAGE-SPECIFIC SCRIPT INITIALIZERS ---
-        function initCalculatorScript() {
-            const assetSlider = document.getElementById('assets-individual');
-            const assetDisplay = document.getElementById('assets-individual-display');
-            if(assetSlider && assetDisplay) {
-                assetSlider.addEventListener('input', (event) => {
-                    assetDisplay.textContent = event.target.value + '%';
-                });
-            }
-            
-            ['alimony-your-income', 'alimony-partner-income', 'assets-total', 'child-your-income', 'child-partner-income'].forEach(id => {
-                const input = document.getElementById(id);
-                if (input) {
-                    input.addEventListener('input', (e) => {
-                        let value = e.target.value.replace(/[^0-9]/g, '');
-                        if (value) {
-                             e.target.value = parseInt(value, 10).toLocaleString(countryFactors[currentCurrency].locale);
-                        } else {
-                            e.target.value = '';
-                        }
+        // Helper function to hide message
+        function hideMessage() {
+            formMessage.style.display = 'none';
+            formMessage.className = 'form-message';
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
                     });
                 }
             });
-        }
-
-        function initLegalHelpScript() {
-            const countrySelect = document.getElementById('legal-countrySelect');
-            const findLawyersBtn = document.getElementById('findLawyersBtn');
-            const askAiBtn = document.getElementById('legal-askAiBtn');
-
-            if (countrySelect) {
-                countrySelect.addEventListener('change', legalHelp_updateLocationOptions);
-                legalHelp_updateLocationOptions(); // Initial population
-            }
-            if (findLawyersBtn) findLawyersBtn.addEventListener('click', legalHelp_handleFindLawyers);
-            if (askAiBtn) askAiBtn.addEventListener('click', legalHelp_handleAskAI);
-        }
-        
-        function initAssetProtectionScript() {
-            if(document.getElementById('asset-protection')){
-                const generateBtn = document.getElementById('generatePlanBtn');
-                if(generateBtn) generateBtn.addEventListener('click', handleProtectionGeneration);
-                
-                const countrySelect = document.getElementById('asset-countrySelect');
-                if(countrySelect) countrySelect.addEventListener('change', setupCountryFacts);
-
-                const askBtn = document.getElementById('askFollowUpBtn');
-                if (askBtn) {
-                    askBtn.addEventListener('click', handleAskStrategyAI);
-                }
-            }
-        }
-
-        function initMentalHealthScript() {
-            if(document.getElementById('mental-health')){
-                const generateBtn = document.getElementById('generateWellnessBtn');
-                if(generateBtn) generateBtn.addEventListener('click', handleWellnessGeneration);
-                
-                const askBtn = document.getElementById('mh-askFollowUpBtn');
-                if (askBtn) {
-                    askBtn.addEventListener('click', handleWellnessFollowUp);
-                }
-            }
-        }
-
-        // --- CALCULATOR PAGE SCRIPT ---
-        const countryFactors = {
-            'USD': { country: 'United States', alimonyFactor: 0.20, locale: 'en-US' },
-            'INR': { country: 'India', alimonyFactor: 0.25, locale: 'en-IN' },
-            'EUR': { country: 'European Union', alimonyFactor: 0.22, locale: 'de-DE' },
-            'GBP': { country: 'United Kingdom', alimonyFactor: 0.28, locale: 'en-GB' }
-        };
-        let currentCurrency = 'INR';
-        let currentSymbol = '₹';
-        let selectedChildrenCount = 1;
-        let calculationResults = { alimony: null, assets: null, childSupport: null };
-
-        function setCurrency(currency, symbol, event) {
-            currentCurrency = currency;
-            currentSymbol = symbol;
-            document.querySelectorAll('.currency-symbol').forEach(el => el.textContent = symbol);
-            document.querySelectorAll('.currency-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-white', 'text-indigo-600');
-                btn.classList.add('bg-white/20', 'hover:bg-white/30', 'text-white');
-            });
-            event.currentTarget.classList.add('active', 'bg-white', 'text-indigo-600');
-            event.currentTarget.classList.remove('bg-white/20', 'hover:bg-white/30', 'text-white');
-        }
-        
-        function formatCurrency(amount) {
-            return `${currentSymbol}${parseInt(amount).toLocaleString(countryFactors[currentCurrency].locale)}`;
-        }
-
-        function parseNumber(value) {
-            return parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
-        }
-
-        function calculateAlimony() {
-            const yourIncome = parseNumber(document.getElementById('alimony-your-income').value);
-            const partnerIncome = parseNumber(document.getElementById('alimony-partner-income').value);
-            const yearsMarried = parseInt(document.getElementById('alimony-years-married').value) || 0;
-            const hasChildren = document.getElementById('alimony-has-children').checked;
-
-            if (yourIncome === 0 && partnerIncome === 0) {
-                 showNotification("Please enter income values.", 'error');
-                return;
-            }
-
-            const higherEarner = Math.max(yourIncome, partnerIncome);
-            const lowerEarner = Math.min(yourIncome, partnerIncome);
-            const incomeDiff = higherEarner - lowerEarner;
-
-            let baseAlimony = incomeDiff * countryFactors[currentCurrency].alimonyFactor;
-            
-            // Adjust based on years married
-            if (yearsMarried > 10) baseAlimony *= 1.2;
-            else if (yearsMarried < 3) baseAlimony *= 0.8;
-
-            // Adjust for children
-            if (hasChildren) baseAlimony *= 1.1;
-
-            const finalAlimony = Math.max(0, Math.round(baseAlimony));
-            calculationResults.alimony = finalAlimony;
-            
-            document.getElementById('alimony-result').textContent = formatCurrency(finalAlimony);
-        }
-
-        function calculateAssets() {
-            const totalAssets = parseNumber(document.getElementById('assets-total').value);
-            const individualPercent = parseInt(document.getElementById('assets-individual').value);
-
-            if (totalAssets === 0) {
-                 showNotification("Please enter total asset value.", 'error');
-                return;
-            }
-
-            const maritalAssets = totalAssets * (1 - (individualPercent / 100));
-            const individualAssets = totalAssets * (individualPercent / 100);
-            
-            const yourMaritalShare = maritalAssets / 2;
-            const partnerMaritalShare = maritalAssets / 2;
-            
-            // Assuming the individual assets belong to 'you' for this example
-            const yourTotalShare = yourMaritalShare + individualAssets;
-            const partnerTotalShare = partnerMaritalShare;
-            
-            calculationResults.assets = { yourShare: yourTotalShare, partnerShare: partnerTotalShare };
-
-            document.getElementById('assets-your-share').textContent = `Your Share: ${formatCurrency(yourTotalShare)}`;
-            document.getElementById('assets-partner-share').textContent = `Partner's Share: ${formatCurrency(partnerTotalShare)}`;
-        }
-
-        function setChildrenCount(count, event) {
-            selectedChildrenCount = count;
-            document.querySelectorAll('.child-count-btn').forEach(btn => {
-                btn.classList.remove('border-indigo-500', 'bg-indigo-50');
-                btn.classList.add('border-gray-200');
-            });
-            event.currentTarget.classList.add('border-indigo-500', 'bg-indigo-50');
-            event.currentTarget.classList.remove('border-gray-200');
-        }
-
-        function calculateChildSupport() {
-            const yourIncome = parseNumber(document.getElementById('child-your-income').value);
-            const partnerIncome = parseNumber(document.getElementById('child-partner-income').value);
-            
-            if (yourIncome === 0 && partnerIncome === 0) {
-                 showNotification("Please enter income values.", 'error');
-                return;
-            }
-            
-            const combinedIncome = yourIncome + partnerIncome;
-            const childCostPercentages = { 1: 0.17, 2: 0.25, 3: 0.29, 4: 0.32 };
-            const percentage = childCostPercentages[selectedChildrenCount] || childCostPercentages[4];
-            
-            const totalSupport = combinedIncome * percentage;
-            
-            const yourContributionPercent = yourIncome / combinedIncome;
-            const partnerContributionPercent = partnerIncome / combinedIncome;
-            
-            // This is a simplified model. The actual payment depends on custody arrangements.
-            // We'll show the total obligation.
-            const supportObligation = (partnerIncome > yourIncome) ? totalSupport * yourContributionPercent : totalSupport * partnerContributionPercent;
-            calculationResults.childSupport = supportObligation;
-            
-            document.getElementById('child-support-result').textContent = formatCurrency(supportObligation);
-        }
-
-        async function getAIRecommendations() {
-            if (calculationResults.alimony === null && calculationResults.assets === null && calculationResults.childSupport === null) {
-                showNotification("Please calculate at least one value before getting recommendations.", 'error');
-                return;
-            }
-
-            let prompt = `Act as a helpful financial advisor specializing in divorce. Based on the following financial estimates for a user in ${countryFactors[currentCurrency].country}, provide three concise, actionable recommendations. The user is looking for next steps. Format the output as a simple list.`;
-            if (calculationResults.alimony !== null) prompt += `\n- Estimated Monthly Alimony: ${formatCurrency(calculationResults.alimony)}`;
-            if (calculationResults.assets !== null) prompt += `\n- Estimated Asset Split: Your share is ${formatCurrency(calculationResults.assets.yourShare)}, partner's share is ${formatCurrency(calculationResults.assets.partnerShare)}.`;
-            if (calculationResults.childSupport !== null) prompt += `\n- Estimated Monthly Child Support Obligation: ${formatCurrency(calculationResults.childSupport)}`;
-            
-            prompt += "\n\nRecommendations:";
-
-            const resultsDiv = document.getElementById('ai-results');
-            const contentDiv = document.getElementById('ai-content');
-            const loadingDiv = document.getElementById('ai-loading');
-            
-            await callGemini(prompt, contentDiv, loadingDiv);
-            resultsDiv.classList.remove('hidden');
-        }
-
-
-        // --- LEGAL HELP PAGE SCRIPT ---
-        const legal_countryData = {
-            us: ['California', 'New York', 'Texas', 'Florida'],
-            uk: ['England & Wales', 'Scotland', 'Northern Ireland'],
-            ca: ['Ontario', 'British Columbia', 'Quebec', 'Alberta'],
-            au: ['New South Wales', 'Victoria', 'Queensland'],
-            in: ['Delhi', 'Mumbai', 'Bangalore', 'Chennai']
-        };
-        const legal_lawyerDatabase = {
-            'California': [{ name: 'Sarah Connor, Esq.', firm: 'Connor Law Group', specialty: 'High-Net-Worth Divorce', rating: 4.9 }],
-            'New York': [{ name: 'John Smith, JD', firm: 'Smith & Partners', specialty: 'Child Custody', rating: 4.7 }, { name: 'Emily White', firm: 'White Legal', specialty: 'Mediation', rating: 4.8 }],
-            'Delhi': [{ name: 'Rajesh Kumar', firm: 'Kumar Associates', specialty: 'Family Law', rating: 4.8 }, { name: 'Priya Sharma', firm: 'Sharma Legal', specialty: 'Property Disputes', rating: 4.6 }],
-             'Mumbai': [{ name: 'Anjali Mehta', firm: 'Mehta Law Firm', specialty: 'Contested Divorce', rating: 4.9 }]
-        };
-
-        function legalHelp_updateLocationOptions() {
-            const countrySelect = document.getElementById('legal-countrySelect');
-            const locationSelect = document.getElementById('legal-locationSelect');
-            const selectedCountry = countrySelect.value;
-            
-            locationSelect.innerHTML = '<option value="">Select your location</option>';
-            
-            if (legal_countryData[selectedCountry]) {
-                legal_countryData[selectedCountry].forEach(location => {
-                    const option = document.createElement('option');
-                    option.value = location;
-                    option.textContent = location;
-                    locationSelect.appendChild(option);
-                });
-            }
-        }
-
-        function legalHelp_handleFindLawyers() {
-            const location = document.getElementById('legal-locationSelect').value;
-            const resultsContainer = document.getElementById('lawyerResults');
-            resultsContainer.innerHTML = '';
-            
-            if (!location) {
-                showNotification("Please select a location.", 'error');
-                return;
-            }
-
-            const lawyers = legal_lawyerDatabase[location] || [];
-
-            if (lawyers.length > 0) {
-                lawyers.forEach(lawyer => {
-                    const card = document.createElement('div');
-                    card.className = 'bg-white p-6 rounded-2xl shadow-md border border-gray-200';
-                    card.innerHTML = `
-                        <h4 class="text-xl font-bold text-gray-900">${lawyer.name}</h4>
-                        <p class="text-gray-600">${lawyer.firm}</p>
-                        <p class="text-sm text-indigo-600 font-semibold mt-2">Specialty: ${lawyer.specialty}</p>
-                        <div class="flex items-center mt-2">
-                            <span class="text-yellow-500 font-bold">${'★'.repeat(Math.round(lawyer.rating))}${'☆'.repeat(5 - Math.round(lawyer.rating))}</span>
-                            <span class="ml-2 text-gray-500">(${lawyer.rating})</span>
-                        </div>
-                    `;
-                    resultsContainer.appendChild(card);
-                });
-            } else {
-                resultsContainer.innerHTML = '<div class="bg-gray-50 rounded-2xl p-6 text-center"><p class="text-gray-600">No lawyers found for this location in our sample data. Try another location.</p></div>';
-            }
-        }
-
-        async function legalHelp_handleAskAI() {
-            const input = document.getElementById('legal-questionInput');
-            const chatBox = document.getElementById('legal-chatMessages');
-            const question = input.value.trim();
-
-            if (!question) return;
-
-            // Add user's message
-            const userMessage = document.createElement('div');
-            userMessage.className = 'chat-message text-right';
-            userMessage.innerHTML = `<p class="inline-block bg-indigo-500 text-white p-3 rounded-xl"><strong>You:</strong> ${question}</p>`;
-            chatBox.appendChild(userMessage);
-
-            input.value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // Prepare for AI response
-            const aiMessage = document.createElement('div');
-            aiMessage.className = 'chat-message';
-            aiMessage.innerHTML = `<p class="text-gray-800"><strong class="text-indigo-600">AI Assistant:</strong> <span class="loading-dots">Thinking</span></p>`;
-            chatBox.appendChild(aiMessage);
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            const prompt = `You are a helpful AI assistant trained on general family law principles. Answer the following user question clearly and concisely. Start your response with a clear disclaimer that you are not a lawyer and this is not legal advice. Question: "${question}"`;
-
-            // This is a placeholder as callGemini updates an element's innerHTML directly.
-            // A more complex implementation would stream the response.
-            const responseContainer = document.createElement('div');
-            await callGemini(prompt, responseContainer, null);
-
-            aiMessage.innerHTML = `<p class="text-gray-800"><strong class="text-indigo-600">AI Assistant:</strong> ${responseContainer.innerHTML}</p>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        // --- ASSET PROTECTION PAGE SCRIPT ---
-        const protectionStrategies = {
-            'us': {
-                'before-marriage': {
-                    'real-estate': { summary: "In the US, using a qualified personal residence trust (QPRT) or a separate trust for pre-marital property offers strong protection.", points: [ { title: "Establish a Revocable Trust", description: "Placing pre-marital real estate into a revocable living trust clearly segregates it as your separate property, provided you do not commingle marital funds for its upkeep." }, { title: "Consider a QPRT for High-Value Homes", description: "A Qualified Personal Residence Trust (QPRT) is an advanced tool that can move a residence out of your estate for tax purposes and protect it." }, { title: "Meticulous Record-Keeping", description: "Keep flawless records of the property's value at the time of marriage, mortgage payments made from separate funds, and any capital improvements." } ] },
-                    'business': { summary: "For US business owners, an LLC with a solid operating agreement that restricts transferability is crucial to protect your interest.", points: [ { title: "Form an LLC with Restrictive Clauses", description: "The operating agreement for your LLC should include specific clauses that prevent a spouse from gaining voting rights or ownership interest in the event of a divorce." }, { title: "Implement a Buy-Sell Agreement", description: "This is a legally binding agreement that dictates what happens to a partner's interest if they leave, including due to divorce, often setting a valuation method." }, { title: "Explore Domestic Asset Protection Trusts (DAPTs)", description: "In certain states like Nevada, you can create a DAPT to hold business interests, providing a strong shield against future claims." } ] },
-                    'general': { summary: "Before marriage in the US, the primary goal is to clearly define and segregate separate property from the future marital estate.", points: [ { title: "Draft a Comprehensive Prenuptial Agreement", description: "This is the most direct way to protect assets. It must be fair, entered into voluntarily, and with full financial disclosure from both parties." }, { title: "Inventory and Value Pre-Marital Assets", description: "Create a detailed list of all assets you own before the marriage, complete with professional appraisals where necessary, to establish a clear baseline." }, { title: "Avoid Commingling Funds", description: "Do not deposit inheritance or funds from pre-marital assets into joint bank accounts. Doing so can convert separate property into marital property." } ] }
-                },
-                'during-marriage': { 'general': { summary: "During marriage in the US, protection involves careful titling of new assets and maintaining the separate character of pre-existing ones.", points: [ { title: "Title New Assets Carefully", description: "When acquiring new property, consider titling it in your sole name if purchased with separate funds. Consult an attorney about the implications in your state (Community Property vs. Equitable Distribution)." }, { title: "Use Postnuptial Agreements", description: "If circumstances change (e.g., one spouse starts a business), a postnuptial agreement can be created to define how that new asset will be treated." }, { title: "Trace Separate Contributions", description: "If you use separate funds to contribute to a marital asset (like a down payment on a joint home), keep meticulous records to trace those funds for a potential reimbursement claim." } ] } },
-                'just-filed': { 'general': { summary: "After filing in the US, automatic restraining orders prevent asset transfers. The focus shifts to proper disclosure and defending your separate property claims.", points: [ { title: "Adhere to ATROs", description: "Comply strictly with Automatic Temporary Restraining Orders (ATROs), which prevent you from selling, transferring, or borrowing against assets without court permission or spousal consent." }, { title: "Comprehensive Financial Disclosures", description: "Work with your legal counsel to prepare a complete and honest declaration of all assets and debts. Hiding assets can lead to severe legal penalties." }, { title: "Validate Separate Property", description: "Gather all documentation (inventories, titles, bank statements) to prove which assets are your separate property and were not commingled during the marriage." } ] } }
-            },
-            'in': {
-                'before-marriage': {
-                    'gold-jewelry': { summary: "In India, 'Stridhan' (a woman's own property) is legally protected. Proper documentation is the key to preventing it from being wrongly claimed as a marital asset.", points: [ { title: "Create a Detailed Inventory", description: "Before marriage, create a comprehensive, witnessed list of all gold, jewelry, and valuable gifts received from your family and friends. Include photos and valuations." }, { title: "Obtain Written Documentation", description: "If possible, get letters or affidavits from the individuals who gave you the items, stating they are gifts exclusively for you. This strengthens the claim that it is your Stridhan." }, { title: "Maintain Separate Storage", description: "Store your Stridhan in a bank locker under your sole name. Avoid putting it into a joint locker, which could imply it's a joint asset." } ] },
-                    'general': { summary: "In India, protecting pre-marital assets focuses on clear documentation and avoiding unintentional conversion of separate property into joint marital assets.", points: [ { title: "Formalize a Prenuptial Agreement", description: "While not legally binding in all aspects in India, a well-drafted prenup holds significant evidentiary value in court regarding the parties' intentions for their separate assets." }, { title: "Segregate Ancestral Property", description: "Clearly document any ancestral property you are entitled to. Keep it titled separately and avoid using joint marital funds for its maintenance or improvement." }, { title: "Keep Separate Bank Accounts", description: "Maintain separate bank accounts for your personal income, gifts, and inheritances received before and during the marriage to prevent commingling of funds." } ] }
-                }
-            }
-        };
-        const didYouKnowFacts = { 
-            'us': "In the US, nine states are 'community property' states, where marital assets are typically split 50/50. The rest use 'equitable distribution'.", 
-            'uk': "In the UK, courts aim for a 'fair' division based on needs, contributions, and circumstances, not necessarily a 50/50 split.", 
-            'in': "In India, 'Stridhan' (a woman's property given before, during, or after marriage) is legally protected and remains her absolute property.", 
-            'ca': "In Canada, matrimonial property laws vary by province, but generally, the value of assets acquired during the marriage is divided equally.", 
-            'au': "In Australia, superannuation (retirement funds) are treated as property and can be split between spouses upon divorce." 
-        };
-
-        function handleProtectionGeneration() {
-            const country = document.getElementById('asset-countrySelect').value;
-            const stage = document.getElementById('asset-stageSelect').value;
-            const assets = Array.from(document.querySelectorAll('.asset-checkbox:checked'));
-
-            if (!country || !stage || assets.length === 0) {
-                showNotification("Please fill out all fields to generate a plan.", 'error');
-                return;
-            }
-
-            const progressContainer = document.getElementById('progressContainer');
-            const progressBar = document.getElementById('progressBar');
-            progressContainer.classList.remove('hidden');
-            progressBar.style.width = '0%';
-
-            // Simulate generation
-            setTimeout(() => { progressBar.style.width = '30%'; }, 200);
-            setTimeout(() => { progressBar.style.width = '70%'; }, 800);
-            setTimeout(() => {
-                progressBar.style.width = '100%';
-                displayProtectionStrategy(country, stage, assets);
-                setTimeout(() => { progressContainer.classList.add('hidden'); }, 500);
-            }, 1500);
-        }
-
-        function displayProtectionStrategy(country, stage, assets) {
-            const output = document.getElementById('protectionOutput');
-            const textEl = document.getElementById('protectionText');
-            const strategyListEl = document.getElementById('strategy-list');
-            strategyListEl.innerHTML = '';
-
-            const primaryAsset = assets[0].value;
-            let data;
-            
-            // Try to find a specific strategy, then fall back to general ones
-            if (protectionStrategies[country] && protectionStrategies[country][stage]) {
-                data = protectionStrategies[country][stage][primaryAsset] || protectionStrategies[country][stage]['general'];
-            }
-            
-            if (data && data.points) {
-                textEl.textContent = data.summary;
-                data.points.forEach(point => {
-                    const pointEl = document.createElement('div');
-                    pointEl.className = 'p-4 bg-white/10 rounded-xl';
-                    pointEl.innerHTML = `<h5 class="font-bold text-lg text-white mb-2">${point.title}</h5><p class="text-white/80 leading-relaxed">${point.description}</p>`;
-                    strategyListEl.appendChild(pointEl);
-                });
-            } else {
-                textEl.textContent = `For your situation in your selected country, specific pre-canned advice is unavailable. General advice is to seek professional legal and financial counsel.`;
-                const defaultPoint = document.createElement('div');
-                defaultPoint.className = 'p-4 bg-white/10 rounded-xl';
-                defaultPoint.innerHTML = `<h5 class="font-bold text-lg text-white mb-2">Seek Professional Advice</h5><p class="text-white/80 leading-relaxed">Consult a local family law attorney for jurisdiction-specific advice, as laws can be highly complex and nuanced.</p>`;
-                strategyListEl.appendChild(defaultPoint);
-            }
-            output.classList.add('show');
-            document.getElementById('aiFollowUpSection')?.classList.remove('hidden');
-            const answerDiv = document.getElementById('aiFollowUpAnswer');
-            if(answerDiv) answerDiv.classList.add('hidden');
-        }
-
-        async function handleAskStrategyAI() {
-            const questionInput = document.getElementById('aiFollowUpQuestion');
-            const answerDiv = document.getElementById('aiFollowUpAnswer');
-            const question = questionInput.value.trim();
-            if (!question) return;
-
-            const initialStrategy = document.getElementById('protectionText').textContent;
-            
-            const prompt = `You are an AI assistant specializing in legal-financial strategies for divorce. A user received the following initial advice: "${initialStrategy}". Now, they have a follow-up question: "${question}". Please provide a clear, concise answer related to their initial advice. Remember to include a disclaimer that this is not legal advice.`;
-
-            await callGemini(prompt, answerDiv, null);
-            questionInput.value = '';
-        }
-
-        function setupCountryFacts() {
-            const country = document.getElementById('asset-countrySelect').value;
-            const factEl = document.getElementById('didYouKnowText');
-            factEl.textContent = didYouKnowFacts[country] || 'Select a country to see a relevant fact.';
-        }
-
-        // --- MENTAL HEALTH PAGE SCRIPT ---
-        const wellnessSuggestions = {
-            confused: {
-                angry: { text: "It's common to feel angry when you're confused about a relationship. The key is to channel that anger constructively to find clarity.", suggestions: ["**Journaling:** Write down exactly what is making you angry, without judgment. This helps identify the root cause beyond the surface-level emotion.", "**'Cool-Down' Time:** When anger peaks, commit to a 15-minute 'cool-down' period before reacting. Go for a walk, listen to music, or practice deep breathing.", "**Seek Neutral Input:** Talk to a therapist or a trusted, unbiased friend. Explaining your confusion and anger to someone else can help organize your thoughts."] },
-                lonely: { text: "Feeling lonely while also being confused is a difficult combination. It's important to focus on self-compassion and gentle connection.", suggestions: ["**Practice Self-Compassion:** Acknowledge that it's okay to be uncertain. Treat yourself with the same kindness you would offer a friend in your situation.", "**Connect with a Hobby:** Re-engage with an activity you love but may have neglected. This builds self-esteem and connects you with a part of yourself outside the relationship.", "**Low-Pressure Socializing:** Reach out to a friend for a simple activity, like a coffee or a walk, without the pressure of discussing your relationship unless you want to."] },
-                anxious: { text: "Anxiety thrives on uncertainty. When you're confused, that anxiety can spiral. Grounding techniques are your best friend here.", suggestions: ["**The 5-4-3-2-1 Method:** When feeling anxious, name 5 things you can see, 4 you can touch, 3 you can hear, 2 you can smell, and 1 you can taste. This pulls you into the present moment.", "**Fact vs. Feeling:** Create two columns on a piece of paper. In one, write down the known facts of your situation. In the other, write down your anxious feelings. This helps separate reality from fear.", "**Mindful Breathing:** Inhale for 4 seconds, hold for 4 seconds, and exhale for 6 seconds. This calms the nervous system and provides an immediate sense of control."] }
-            },
-            separated: {
-                grieving: { text: "Grief is a natural and necessary part of separation. It's the process of letting go of a future you envisioned. Be patient with yourself.", suggestions: ["**Allow Yourself to Feel:** Don't try to suppress sadness. Schedule time to cry, listen to sad music, or look at old photos if you need to. Giving grief space helps it move through you.", "**Create New Routines:** Your old routines were likely tied to your partner. Create a simple new morning or evening routine that is just for you. This builds a sense of stability and a new identity.", "**Memorialize the Good:** Write a letter (that you don't send) acknowledging the good parts of the relationship. This helps you grieve the loss without idealizing it, allowing for a more balanced closure."] },
-                lonely: { text: "The loneliness after a separation can be overwhelming, as it's an abrupt change. The goal is to slowly rebuild your social world.", suggestions: ["**Schedule Your Social Time:** Be intentional. Plan at least one social interaction each week, even if it's just a phone call. This prevents you from isolating yourself.", "**Rediscover 'You':** What did you enjoy before the relationship? Re-join a class, a sports team, or a club related to that interest. You'll meet people with shared passions.", "**Embrace the Quiet:** Reframe 'loneliness' as 'solitude'. Use this time to get comfortable in your own company. Take yourself on a date, to the movies, or a nice dinner."] },
-                free: { text: "Feeling a sense of freedom after a separation is valid and often a sign that the relationship was restrictive. This is a powerful time for rediscovery.", suggestions: ["**Create a 'Freedom List':** Write down all the things you can now do that you couldn't before. It could be small (painting a wall your favorite color) or big (planning a solo trip). Start doing them!", "**Set New Goals:** This is a blank slate. What do you want your life to look like in one year? Set exciting new goals in your career, health, or personal life that are entirely your own.", "**Explore Your Identity:** You've changed since before the relationship. Use this time to explore new styles, hobbies, and interests to discover who you are now, as an individual."] }
-            },
-            divorced: {
-                free: { text: "You've made it through a difficult process and now have a new chapter ahead. This freedom is something to be cherished and built upon.", suggestions: ["**Create a Vision Board:** Get creative and visually map out what you want your new life to include—travel, hobbies, relationships, career goals. Make your future tangible and exciting.", "**Establish Healthy Boundaries:** You've learned a lot. Use this knowledge to set firm, healthy boundaries in all new relationships (platonic, romantic, and professional) to protect your peace.", "**Give Back:** Channel your experience into helping others. Volunteering for a cause you care about can provide a deep sense of purpose and connection to your community."] }
-            }
-        };
-
-        function handleWellnessGeneration() {
-            const status = document.getElementById('mh-statusSelect').value;
-            const emotion = document.getElementById('mh-emotionSelect').value;
-
-            if (!status || !emotion) {
-                showNotification("Please select your status and primary emotion.", 'error');
-                return;
-            }
-            
-            const data = wellnessSuggestions[status]?.[emotion] || { text: "We're glad you're here. The first step is acknowledging your feelings. We recommend starting with mindfulness exercises and considering professional support for guidance tailored to you.", suggestions: ["Practice daily gratitude journaling.", "Explore mindfulness or meditation apps.", "Consider speaking with a therapist or counselor."] };
-
-            document.getElementById('wellnessText').textContent = data.text;
-            document.getElementById('suggestion1').innerHTML = data.suggestions[0] || '';
-            document.getElementById('suggestion2').innerHTML = data.suggestions[1] || '';
-            document.getElementById('suggestion3').innerHTML = data.suggestions[2] || '';
-
-            document.getElementById('wellnessOutput').classList.add('show');
-            document.getElementById('mh-aiFollowUpSection')?.classList.remove('hidden');
-            const answerDiv = document.getElementById('mh-aiFollowUpAnswer');
-            if(answerDiv) answerDiv.classList.add('hidden');
-        }
-
-        async function handleWellnessFollowUp() {
-            const questionInput = document.getElementById('mh-aiFollowUpQuestion');
-            const answerDiv = document.getElementById('mh-aiFollowUpAnswer');
-            const question = questionInput.value.trim();
-            if (!question) return;
-
-            const initialSuggestions = [
-                document.getElementById('suggestion1').textContent,
-                document.getElementById('suggestion2').textContent,
-                document.getElementById('suggestion3').textContent,
-            ].join('; ');
-
-            const prompt = `You are a compassionate AI mental wellness guide. A user has been given the following suggestions: "${initialSuggestions}". They have a follow-up question: "${question}". Please provide a supportive, actionable, and encouraging response. Do not give medical advice. Include a disclaimer that you are not a therapist and professional help is recommended for serious issues.`;
-
-            await callGemini(prompt, answerDiv, null);
-            questionInput.value = '';
-        }
-
+        });
     </script>
 </body>
 </html>
