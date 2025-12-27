@@ -1532,9 +1532,16 @@
 
         function legalHelp_handleFindLawyers() {
             const countrySelect = document.getElementById('legal-countrySelect');
-            const location = document.getElementById('legal-locationSelect').value;
-            const country = countrySelect.value;
+            const locationSelect = document.getElementById('legal-locationSelect');
             const resultsContainer = document.getElementById('lawyerResults');
+            
+            if (!countrySelect || !locationSelect || !resultsContainer) {
+                console.error('Required elements not found');
+                return;
+            }
+            
+            const location = locationSelect.value;
+            const country = countrySelect.value;
             resultsContainer.innerHTML = '';
             
             if (!location) {
