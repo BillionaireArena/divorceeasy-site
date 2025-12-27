@@ -3,989 +3,792 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DivorceEasy - Navigate Your Divorce Journey with Confidence</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>DivorceEasy - Simplified Divorce Process</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
         * {
-            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .gradient-bg {
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        .card-hover {
-            transition: all 0.3s ease;
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        
-        .card-hover:hover {
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 150px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
-        
-        .smooth-scroll {
-            scroll-behavior: smooth;
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        /* Calculator Section */
+        .calculator {
+            padding: 80px 0;
         }
-        
+
+        .calculator-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #667eea;
+        }
+
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-            animation: fadeIn 0.3s ease;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
         }
-        
+
+        .modal.show {
+            display: flex;
+        }
+
         .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 0;
-            border-radius: 12px;
-            width: 90%;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
             max-width: 500px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            animation: slideDown 0.3s ease;
+            width: 90%;
+            position: relative;
         }
-        
-        @keyframes slideDown {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
             cursor: pointer;
-            padding: 0 15px;
+            color: #999;
+            background: none;
+            border: none;
         }
-        
-        .close:hover,
-        .close:focus {
-            color: #000;
+
+        .close-modal:hover {
+            color: #333;
         }
-        
-        .calculator-section {
+
+        .modal h2 {
+            margin-bottom: 1.5rem;
+            color: #667eea;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Form States */
+        .form-loading,
+        .form-success,
+        .form-error {
             display: none;
+            text-align: center;
+            padding: 2rem;
         }
-        
-        .calculator-section.active {
+
+        .form-loading.show,
+        .form-success.show,
+        .form-error.show {
             display: block;
         }
-        
-        .nav-link {
-            position: relative;
-            transition: color 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: #667eea;
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .progress-bar {
-            height: 8px;
-            background-color: #e5e7eb;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s ease;
-        }
-        
-        .result-card {
-            background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
-            border-left: 4px solid #667eea;
-        }
-        
+
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-right: 8px;
+            margin: 0 auto 1rem;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        .success-message {
-            background-color: #d1fae5;
-            border-left: 4px solid #10b981;
-            color: #065f46;
+
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
         }
-        
+
+        .success-checkmark .check-icon {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            border-radius: 50%;
+            box-sizing: content-box;
+            border: 4px solid #4CAF50;
+        }
+
+        .success-checkmark .check-icon::before {
+            top: 3px;
+            left: -2px;
+            width: 30px;
+            transform-origin: 100% 50%;
+            border-radius: 100px 0 0 100px;
+        }
+
+        .success-checkmark .check-icon::after {
+            top: 0;
+            left: 30px;
+            width: 60px;
+            transform-origin: 0 50%;
+            border-radius: 0 100px 100px 0;
+            animation: rotate-circle 4.25s ease-in;
+        }
+
+        .success-checkmark .check-icon::before,
+        .success-checkmark .check-icon::after {
+            content: '';
+            height: 100px;
+            position: absolute;
+            background: #FFFFFF;
+            transform: rotate(-45deg);
+        }
+
+        .success-checkmark .check-icon .icon-line {
+            height: 5px;
+            background-color: #4CAF50;
+            display: block;
+            border-radius: 2px;
+            position: absolute;
+            z-index: 10;
+        }
+
+        .success-checkmark .check-icon .icon-line.line-tip {
+            top: 46px;
+            left: 14px;
+            width: 25px;
+            transform: rotate(45deg);
+            animation: icon-line-tip 0.75s;
+        }
+
+        .success-checkmark .check-icon .icon-line.line-long {
+            top: 38px;
+            right: 8px;
+            width: 47px;
+            transform: rotate(-45deg);
+            animation: icon-line-long 0.75s;
+        }
+
+        @keyframes icon-line-tip {
+            0% {
+                width: 0;
+                left: 1px;
+                top: 19px;
+            }
+            54% {
+                width: 0;
+                left: 1px;
+                top: 19px;
+            }
+            70% {
+                width: 50px;
+                left: -8px;
+                top: 37px;
+            }
+            84% {
+                width: 17px;
+                left: 21px;
+                top: 48px;
+            }
+            100% {
+                width: 25px;
+                left: 14px;
+                top: 45px;
+            }
+        }
+
+        @keyframes icon-line-long {
+            0% {
+                width: 0;
+                right: 46px;
+                top: 54px;
+            }
+            65% {
+                width: 0;
+                right: 46px;
+                top: 54px;
+            }
+            84% {
+                width: 55px;
+                right: 0px;
+                top: 35px;
+            }
+            100% {
+                width: 47px;
+                right: 8px;
+                top: 38px;
+            }
+        }
+
         .error-message {
-            background-color: #fee2e2;
-            border-left: 4px solid #ef4444;
-            color: #991b1b;
+            color: #f44336;
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
         }
     </style>
 </head>
-<body class="smooth-scroll">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <i class="fas fa-balance-scale text-3xl text-purple-600 mr-3"></i>
-                    <span class="text-2xl font-bold gradient-bg bg-clip-text text-transparent">DivorceEasy</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link text-gray-700 hover:text-purple-600">Home</a>
-                    <a href="#calculators" class="nav-link text-gray-700 hover:text-purple-600">Calculators</a>
-                    <a href="#legal-help" class="nav-link text-gray-700 hover:text-purple-600">Legal Help</a>
-                    <a href="#asset-protection" class="nav-link text-gray-700 hover:text-purple-600">Asset Protection</a>
-                    <a href="#mental-health" class="nav-link text-gray-700 hover:text-purple-600">Mental Health</a>
-                    <button onclick="openModal()" class="gradient-bg text-white px-6 py-2 rounded-full hover:opacity-90 transition">Get Started</button>
-                </div>
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-gray-700">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <a href="#home" class="block px-4 py-2 text-gray-700 hover:bg-purple-50">Home</a>
-            <a href="#calculators" class="block px-4 py-2 text-gray-700 hover:bg-purple-50">Calculators</a>
-            <a href="#legal-help" class="block px-4 py-2 text-gray-700 hover:bg-purple-50">Legal Help</a>
-            <a href="#asset-protection" class="block px-4 py-2 text-gray-700 hover:bg-purple-50">Asset Protection</a>
-            <a href="#mental-health" class="block px-4 py-2 text-gray-700 hover:bg-purple-50">Mental Health</a>
-            <button onclick="openModal()" class="w-full text-left px-4 py-2 text-purple-600 font-semibold">Get Started</button>
-        </div>
-    </nav>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">DivorceEasy</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#calculator">Calculator</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- Hero Section -->
-    <section id="home" class="pt-24 pb-20 gradient-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center fade-in">
-                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">Navigate Your Divorce Journey with Confidence</h1>
-                <p class="text-xl text-white mb-8 opacity-90">AI-powered tools, expert guidance, and compassionate support - all in one place</p>
-                <button onclick="openModal()" class="bg-white text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg">
-                    Start Your Journey <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-            </div>
-            <div class="mt-16 grid md:grid-cols-3 gap-8">
-                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-6 text-white">
-                    <i class="fas fa-calculator text-4xl mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Smart Calculators</h3>
-                    <p class="opacity-90">Estimate alimony, child support, and asset division with AI-powered precision</p>
+    <section class="hero">
+        <div class="container">
+            <h1>Navigate Your Divorce with Confidence</h1>
+            <p>Simplified, affordable, and stress-free divorce solutions</p>
+            <button class="cta-button" onclick="openModal()">Get Started Today</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose DivorceEasy?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast & Simple</h3>
+                    <p>Complete your divorce paperwork in as little as 20 minutes with our guided process.</p>
                 </div>
-                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-6 text-white">
-                    <i class="fas fa-gavel text-4xl mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Legal Guidance</h3>
-                    <p class="opacity-90">Connect with experienced divorce attorneys in your area</p>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Affordable Pricing</h3>
+                    <p>Save thousands compared to traditional attorney fees. Starting at just $299.</p>
                 </div>
-                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-6 text-white">
-                    <i class="fas fa-heart text-4xl mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Emotional Support</h3>
-                    <p class="opacity-90">Access mental health resources and support groups</p>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>100% Confidential</h3>
+                    <p>Your information is secure and private. We use bank-level encryption.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Court-Approved Forms</h3>
+                    <p>All documents are state-specific and court-approved for your peace of mind.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Expert Support</h3>
+                    <p>Our team of divorce specialists is here to help you every step of the way.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3>Satisfaction Guaranteed</h3>
+                    <p>100% money-back guarantee if you're not satisfied with our service.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Calculators Section -->
-    <section id="calculators" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Financial Calculators</h2>
-                <p class="text-xl text-gray-600">Get accurate estimates powered by AI and legal expertise</p>
-            </div>
-            
-            <!-- Calculator Navigation -->
-            <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <button onclick="showCalculator('alimony')" class="calculator-nav-btn bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
-                    <i class="fas fa-money-bill-wave mr-2"></i>Alimony Calculator
-                </button>
-                <button onclick="showCalculator('child-support')" class="calculator-nav-btn bg-white text-purple-600 border-2 border-purple-600 px-6 py-3 rounded-lg hover:bg-purple-50 transition">
-                    <i class="fas fa-child mr-2"></i>Child Support Calculator
-                </button>
-                <button onclick="showCalculator('asset-division')" class="calculator-nav-btn bg-white text-purple-600 border-2 border-purple-600 px-6 py-3 rounded-lg hover:bg-purple-50 transition">
-                    <i class="fas fa-home mr-2"></i>Asset Division Calculator
-                </button>
-            </div>
-
-            <!-- Alimony Calculator -->
-            <div id="alimony" class="calculator-section active">
-                <div class="bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
-                    <h3 class="text-2xl font-bold mb-6 text-gray-900">Alimony Calculator</h3>
-                    <form id="alimony-form" class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Your Annual Income ($)</label>
-                                <input type="number" id="alimony-income1" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Spouse's Annual Income ($)</label>
-                                <input type="number" id="alimony-income2" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Marriage Duration (years)</label>
-                                <input type="number" id="alimony-duration" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">State</label>
-                                <select id="alimony-state" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                                    <option value="">Select State</option>
-                                    <option value="CA">California</option>
-                                    <option value="NY">New York</option>
-                                    <option value="TX">Texas</option>
-                                    <option value="FL">Florida</option>
-                                    <option value="IL">Illinois</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition">
-                            Calculate Alimony <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
-                    </form>
-                    <div id="alimony-result" class="mt-6"></div>
-                </div>
-            </div>
-
-            <!-- Child Support Calculator -->
-            <div id="child-support" class="calculator-section">
-                <div class="bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
-                    <h3 class="text-2xl font-bold mb-6 text-gray-900">Child Support Calculator</h3>
-                    <form id="child-support-form" class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Your Monthly Income ($)</label>
-                                <input type="number" id="cs-income1" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Other Parent's Monthly Income ($)</label>
-                                <input type="number" id="cs-income2" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Number of Children</label>
-                                <input type="number" id="cs-children" min="1" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Custody Arrangement</label>
-                                <select id="cs-custody" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                                    <option value="">Select Custody</option>
-                                    <option value="sole">Sole Custody</option>
-                                    <option value="joint">Joint Custody</option>
-                                    <option value="primary">Primary Custody</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">State</label>
-                                <select id="cs-state" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                                    <option value="">Select State</option>
-                                    <option value="CA">California</option>
-                                    <option value="NY">New York</option>
-                                    <option value="TX">Texas</option>
-                                    <option value="FL">Florida</option>
-                                    <option value="IL">Illinois</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition">
-                            Calculate Child Support <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
-                    </form>
-                    <div id="cs-result" class="mt-6"></div>
-                </div>
-            </div>
-
-            <!-- Asset Division Calculator -->
-            <div id="asset-division" class="calculator-section">
-                <div class="bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
-                    <h3 class="text-2xl font-bold mb-6 text-gray-900">Asset Division Calculator</h3>
-                    <form id="asset-form" class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Home Value ($)</label>
-                                <input type="number" id="asset-home" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Mortgage Balance ($)</label>
-                                <input type="number" id="asset-mortgage" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Savings/Investments ($)</label>
-                                <input type="number" id="asset-savings" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Retirement Accounts ($)</label>
-                                <input type="number" id="asset-retirement" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Other Assets ($)</label>
-                                <input type="number" id="asset-other" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Total Debts ($)</label>
-                                <input type="number" id="asset-debts" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-gray-700 mb-2 font-medium">State (Property Division Law)</label>
-                                <select id="asset-state" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                                    <option value="">Select State</option>
-                                    <option value="community">Community Property State</option>
-                                    <option value="equitable">Equitable Distribution State</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition">
-                            Calculate Asset Division <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
-                    </form>
-                    <div id="asset-result" class="mt-6"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Legal Help Section -->
-    <section id="legal-help" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Expert Legal Guidance</h2>
-                <p class="text-xl text-gray-600">Connect with experienced divorce attorneys</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h3 class="text-2xl font-bold mb-4">Why You Need Legal Support</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 text-xl mr-3 mt-1"></i>
-                            <span class="text-gray-700">Navigate complex legal procedures with confidence</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 text-xl mr-3 mt-1"></i>
-                            <span class="text-gray-700">Protect your rights and financial interests</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 text-xl mr-3 mt-1"></i>
-                            <span class="text-gray-700">Ensure fair custody and support arrangements</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 text-xl mr-3 mt-1"></i>
-                            <span class="text-gray-700">Reduce stress with professional representation</span>
-                        </li>
-                    </ul>
-                    <button onclick="openModal()" class="mt-8 gradient-bg text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition">
-                        Find an Attorney <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
-                <div class="bg-gray-50 rounded-xl p-8">
-                    <h3 class="text-xl font-bold mb-6">AI-Powered Attorney Matching</h3>
-                    <form id="attorney-form" class="space-y-4">
-                        <div>
-                            <label class="block text-gray-700 mb-2">Your Zip Code</label>
-                            <input type="text" id="attorney-zip" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-2">Primary Concern</label>
-                            <select id="attorney-concern" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                                <option value="">Select Concern</option>
-                                <option value="custody">Child Custody</option>
-                                <option value="support">Financial Support</option>
-                                <option value="assets">Asset Division</option>
-                                <option value="general">General Divorce</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
-                            Find Attorneys
-                        </button>
-                    </form>
-                    <div id="attorney-results" class="mt-6"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Asset Protection Section -->
-    <section id="asset-protection" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Protect Your Assets</h2>
-                <p class="text-xl text-gray-600">Strategic guidance for safeguarding your financial future</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-shield-alt text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Pre-Divorce Planning</h3>
-                    <p class="text-gray-600 mb-4">Learn strategies to protect your assets before filing</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Document all assets</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Secure financial records</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Understand your rights</li>
-                    </ul>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-file-contract text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Legal Documents</h3>
-                    <p class="text-gray-600 mb-4">Essential paperwork for asset protection</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Prenuptial agreements</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Financial disclosures</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Property valuations</li>
-                    </ul>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-chart-line text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Financial Recovery</h3>
-                    <p class="text-gray-600 mb-4">Rebuild your financial foundation post-divorce</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Budget planning</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Credit rebuilding</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Investment strategies</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-12 bg-white rounded-xl shadow-lg p-8">
-                <h3 class="text-2xl font-bold mb-6 text-center">Asset Protection Checklist</h3>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="space-y-3">
-                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                            <input type="checkbox" class="w-5 h-5 text-purple-600 mr-3">
-                            <span class="text-gray-700">Gather all financial documents</span>
-                        </div>
-                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                            <input type="checkbox" class="w-5 h-5 text-purple-600 mr-3">
-                            <span class="text-gray-700">List all marital assets</span>
-                        </div>
-                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                            <input type="checkbox" class="w-5 h-5 text-purple-600 mr-3">
-                            <span class="text-gray-700">Open individual bank account</span>
-                        </div>
-                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                            <input type="checkbox" class="w-5 h-5 text-purple-600 mr-3">
-                            <span class="text-gray-700">Review retirement accounts</span>
-                        </div>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                            <input type="checkbox" class="w-5 h-5 text-purple-600 mr-3">
-                            <span class="text-gray-700">Get property appraisals</span>
-                        </div>
-                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                            <input type="checkbox" class="w-5 h-5 text-purple-600 mr-3">
-                            <span class="text-gray-700">Check credit reports</span>
-                        </div>
-                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                            <input type="checkbox" class="w-5 h-5 text-purple-600 mr-3">
-                            <span class="text-gray-700">Update beneficiaries</span>
-                        </div>
-                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                            <input type="checkbox" class="w-5 h-5 text-purple-600 mr-3">
-                            <span class="text-gray-700">Consult financial advisor</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mental Health Section -->
-    <section id="mental-health" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Mental Health & Wellness</h2>
-                <p class="text-xl text-gray-600">You don't have to go through this alone</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <div class="bg-purple-50 rounded-xl p-6 text-center card-hover">
-                    <i class="fas fa-users text-4xl text-purple-600 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Support Groups</h3>
-                    <p class="text-gray-600 mb-4">Connect with others going through divorce</p>
-                    <button onclick="openModal()" class="text-purple-600 font-semibold hover:text-purple-700">Join Now →</button>
-                </div>
-                <div class="bg-blue-50 rounded-xl p-6 text-center card-hover">
-                    <i class="fas fa-user-md text-4xl text-blue-600 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Therapy Services</h3>
-                    <p class="text-gray-600 mb-4">Professional counseling and therapy</p>
-                    <button onclick="openModal()" class="text-blue-600 font-semibold hover:text-blue-700">Find Therapist →</button>
-                </div>
-                <div class="bg-green-50 rounded-xl p-6 text-center card-hover">
-                    <i class="fas fa-spa text-4xl text-green-600 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Wellness Resources</h3>
-                    <p class="text-gray-600 mb-4">Self-care tips and mindfulness</p>
-                    <button onclick="openModal()" class="text-green-600 font-semibold hover:text-green-700">Explore →</button>
-                </div>
-                <div class="bg-pink-50 rounded-xl p-6 text-center card-hover">
-                    <i class="fas fa-book-open text-4xl text-pink-600 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Educational Resources</h3>
-                    <p class="text-gray-600 mb-4">Articles, guides, and videos</p>
-                    <button onclick="openModal()" class="text-pink-600 font-semibold hover:text-pink-700">Learn More →</button>
-                </div>
-            </div>
-            
-            <div class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-8 md:p-12">
-                <div class="max-w-3xl mx-auto text-center">
-                    <h3 class="text-3xl font-bold mb-4">24/7 Crisis Support</h3>
-                    <p class="text-lg text-gray-700 mb-6">If you're experiencing a mental health crisis, help is available immediately</p>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-lg p-6">
-                            <h4 class="font-bold mb-2">National Suicide Prevention Lifeline</h4>
-                            <a href="tel:988" class="text-2xl font-bold text-purple-600 hover:text-purple-700">988</a>
-                        </div>
-                        <div class="bg-white rounded-lg p-6">
-                            <h4 class="font-bold mb-2">Crisis Text Line</h4>
-                            <p class="text-lg">Text <span class="font-bold text-purple-600">HELLO</span> to <span class="font-bold text-purple-600">741741</span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-balance-scale text-2xl text-purple-400 mr-2"></i>
-                        <span class="text-xl font-bold">DivorceEasy</span>
-                    </div>
-                    <p class="text-gray-400">Empowering you through every step of your divorce journey with compassion and expertise.</p>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-4">Quick Links</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#calculators" class="hover:text-white">Calculators</a></li>
-                        <li><a href="#legal-help" class="hover:text-white">Legal Help</a></li>
-                        <li><a href="#asset-protection" class="hover:text-white">Asset Protection</a></li>
-                        <li><a href="#mental-health" class="hover:text-white">Mental Health</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Blog</a></li>
-                        <li><a href="#" class="hover:text-white">FAQs</a></li>
-                        <li><a href="#" class="hover:text-white">State Laws</a></li>
-                        <li><a href="#" class="hover:text-white">Support Groups</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-4">Contact</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-envelope mr-2"></i>support@divorceeasy.com</li>
-                        <li><i class="fas fa-phone mr-2"></i>1-800-DIVORCE</li>
-                        <li class="flex space-x-4 mt-4">
-                            <a href="#" class="hover:text-purple-400"><i class="fab fa-facebook text-xl"></i></a>
-                            <a href="#" class="hover:text-purple-400"><i class="fab fa-twitter text-xl"></i></a>
-                            <a href="#" class="hover:text-purple-400"><i class="fab fa-linkedin text-xl"></i></a>
-                            <a href="#" class="hover:text-purple-400"><i class="fab fa-instagram text-xl"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 DivorceEasy. All rights reserved. | <a href="#" class="hover:text-white">Privacy Policy</a> | <a href="#" class="hover:text-white">Terms of Service</a></p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Get Started Modal -->
-    <div id="getStartedModal" class="modal">
-        <div class="modal-content">
-            <div class="gradient-bg p-6 rounded-t-xl">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <h2 class="text-2xl font-bold text-white">Start Your Journey</h2>
-                <p class="text-white opacity-90 mt-2">Tell us a bit about yourself to get personalized guidance</p>
-            </div>
-            <form id="get-started-form" class="p-6">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-gray-700 mb-2 font-medium">Full Name</label>
-                        <input type="text" id="modal-name" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 mb-2 font-medium">Email Address</label>
-                        <input type="email" id="modal-email" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 mb-2 font-medium">Current Situation</label>
-                        <select id="modal-situation" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-purple-600 focus:outline-none" required>
-                            <option value="">Select your situation</option>
-                            <option value="considering">Considering divorce</option>
-                            <option value="filing">Planning to file</option>
-                            <option value="process">In divorce process</option>
-                            <option value="post">Post-divorce support</option>
+    <!-- Calculator Section -->
+    <section id="calculator" class="calculator">
+        <div class="container">
+            <h2 class="section-title">Estimate Your Divorce Costs</h2>
+            <div class="calculator-container">
+                <form id="costCalculator">
+                    <div class="form-group">
+                        <label for="state">Select Your State:</label>
+                        <select id="state" required>
+                            <option value="">Choose a state...</option>
+                            <option value="250">California</option>
+                            <option value="200">Texas</option>
+                            <option value="180">Florida</option>
+                            <option value="220">New York</option>
+                            <option value="150">Other States</option>
                         </select>
                     </div>
-                    <div id="form-message" class="hidden"></div>
-                    <button type="submit" id="submit-btn" class="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition">
-                        Get Started
-                    </button>
+                    <div class="form-group">
+                        <label for="children">Do you have children?</label>
+                        <select id="children" required>
+                            <option value="0">No</option>
+                            <option value="100">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="property">Shared Property Value:</label>
+                        <select id="property" required>
+                            <option value="0">None</option>
+                            <option value="50">Under $50,000</option>
+                            <option value="100">$50,000 - $200,000</option>
+                            <option value="200">Over $200,000</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="calculate-btn">Calculate Costs</button>
+                </form>
+                <div id="result" class="result">
+                    <h3>Your Estimated Costs:</h3>
+                    <div class="result-item">
+                        <span>Court Filing Fees:</span>
+                        <span id="filingFee">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Additional Fees:</span>
+                        <span id="additionalFee">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>DivorceEasy Service:</span>
+                        <span>$299</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Total Estimated Cost:</span>
+                        <span id="totalCost">$0</span>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                        Compare to average attorney fees of $15,000 - $30,000
+                    </p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="features">
+        <div class="container">
+            <h2 class="section-title">Ready to Get Started?</h2>
+            <div style="text-align: center;">
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                    Take the first step towards a simpler divorce process today.
+                </p>
+                <button class="cta-button" onclick="openModal()">Start Your Divorce</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="getStartedModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <h2>Get Started with DivorceEasy</h2>
+            
+            <!-- Main Form -->
+            <form id="getStartedForm">
+                <div class="form-group">
+                    <label for="userName">Full Name:</label>
+                    <input type="text" id="userName" name="userName" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email Address:</label>
+                    <input type="email" id="userEmail" name="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="userSituation">Brief Description of Your Situation:</label>
+                    <input type="text" id="userSituation" name="userSituation" placeholder="e.g., Uncontested divorce, no children" required>
+                </div>
+                <button type="submit" class="calculate-btn">Submit</button>
             </form>
+
+            <!-- Loading State -->
+            <div id="formLoading" class="form-loading">
+                <div class="spinner"></div>
+                <p>Submitting your information...</p>
+            </div>
+
+            <!-- Success State -->
+            <div id="formSuccess" class="form-success">
+                <div class="success-checkmark">
+                    <div class="check-icon">
+                        <span class="icon-line line-tip"></span>
+                        <span class="icon-line line-long"></span>
+                    </div>
+                </div>
+                <h3 style="color: #4CAF50; margin-bottom: 1rem;">Success!</h3>
+                <p>Thank you for your submission. We'll be in touch shortly!</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="formError" class="form-error">
+                <p class="error-message" id="errorMessage">An error occurred. Please try again.</p>
+                <button class="calculate-btn" onclick="resetForm()" style="margin-top: 1rem;">Try Again</button>
+            </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 DivorceEasy. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                Simplified divorce solutions for everyone.
+            </p>
+        </div>
+    </footer>
+
     <script>
-        // Initialize Supabase
+        // Supabase Configuration
         const SUPABASE_URL = 'https://lbdaagfdfmeqitwijilr.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxiZGFhZ2ZkZm1lcWl0d2lqaWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MjQ3MzcsImV4cCI6MjA4MjQwMDczN30.5NV-eB2XxwJ6RhDdia3pPu4sW_m3VGW5eqyMI48EJLo';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+        // Cost Calculator
+        document.getElementById('costCalculator').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const filingFee = parseInt(document.getElementById('state').value) || 0;
+            const childrenFee = parseInt(document.getElementById('children').value) || 0;
+            const propertyFee = parseInt(document.getElementById('property').value) || 0;
+            const serviceFee = 299;
+            
+            const additionalFees = childrenFee + propertyFee;
+            const totalCost = filingFee + additionalFees + serviceFee;
+            
+            document.getElementById('filingFee').textContent = '$' + filingFee;
+            document.getElementById('additionalFee').textContent = '$' + additionalFees;
+            document.getElementById('totalCost').textContent = '$' + totalCost;
+            
+            document.getElementById('result').classList.add('show');
         });
 
-        // Modal functions
+        // Modal Functions
         function openModal() {
-            document.getElementById('getStartedModal').style.display = 'block';
+            document.getElementById('getStartedModal').classList.add('show');
         }
 
         function closeModal() {
-            document.getElementById('getStartedModal').style.display = 'none';
-            document.getElementById('get-started-form').reset();
-            document.getElementById('form-message').classList.add('hidden');
+            document.getElementById('getStartedModal').classList.remove('show');
+            resetForm();
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('getStartedModal');
-            if (event.target == modal) {
-                closeModal();
-            }
+        // UI State Management Functions
+        function showLoading() {
+            document.getElementById('getStartedForm').style.display = 'none';
+            document.getElementById('formError').classList.remove('show');
+            document.getElementById('formSuccess').classList.remove('show');
+            document.getElementById('formLoading').classList.add('show');
         }
 
-        // Get Started Form Submission with Supabase
-        document.getElementById('get-started-form').addEventListener('submit', async function(e) {
+        function showSuccess() {
+            document.getElementById('formLoading').classList.remove('show');
+            document.getElementById('formError').classList.remove('show');
+            document.getElementById('formSuccess').classList.add('show');
+        }
+
+        function showError(message) {
+            document.getElementById('formLoading').classList.remove('show');
+            document.getElementById('formSuccess').classList.remove('show');
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('formError').classList.add('show');
+        }
+
+        function resetForm() {
+            document.getElementById('getStartedForm').reset();
+            document.getElementById('getStartedForm').style.display = 'block';
+            document.getElementById('formLoading').classList.remove('show');
+            document.getElementById('formSuccess').classList.remove('show');
+            document.getElementById('formError').classList.remove('show');
+        }
+
+        // Form Submission Handler
+        document.getElementById('getStartedForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const submitBtn = document.getElementById('submit-btn');
-            const formMessage = document.getElementById('form-message');
-            const name = document.getElementById('modal-name').value;
-            const email = document.getElementById('modal-email').value;
-            const situation = document.getElementById('modal-situation').value;
-
+            // Get form values
+            const fullName = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const situation = document.getElementById('userSituation').value;
+            
             // Show loading state
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<div class="spinner"></div>Submitting...';
-            formMessage.classList.add('hidden');
-
+            showLoading();
+            
             try {
                 // Insert data into Supabase
                 const { data, error } = await supabase
                     .from('users')
                     .insert([
-                        { 
-                            full_name: name,
+                        {
+                            full_name: fullName,
                             email: email,
                             situation: situation
                         }
-                    ]);
-
-                if (error) throw error;
-
-                // Show success message
-                formMessage.className = 'success-message p-4 rounded-lg mb-4';
-                formMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Thank you! We\'ll be in touch soon with personalized resources.';
-                formMessage.classList.remove('hidden');
+                    ])
+                    .select();
                 
-                // Reset form after delay
+                if (error) {
+                    // Handle duplicate email error
+                    if (error.code === '23505') {
+                        showError('This email address is already registered. Please use a different email or contact support.');
+                    } else {
+                        showError('An error occurred: ' + error.message);
+                    }
+                    return;
+                }
+                
+                // Store user data in localStorage
+                localStorage.setItem('divorceEasyUser', JSON.stringify({
+                    fullName: fullName,
+                    email: email,
+                    situation: situation,
+                    submittedAt: new Date().toISOString()
+                }));
+                
+                // Show success state
+                showSuccess();
+                
+                // Close modal after 2 seconds
                 setTimeout(() => {
                     closeModal();
                 }, 2000);
-
-            } catch (error) {
-                console.error('Error:', error);
                 
-                // Show error message
-                formMessage.className = 'error-message p-4 rounded-lg mb-4';
-                formMessage.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i>Something went wrong. Please try again or contact support.';
-                formMessage.classList.remove('hidden');
-            } finally {
-                // Reset button state
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Get Started';
+            } catch (err) {
+                showError('An unexpected error occurred. Please try again later.');
+                console.error('Error:', err);
             }
         });
 
-        // Calculator Navigation
-        function showCalculator(calculatorId) {
-            // Hide all calculators
-            document.querySelectorAll('.calculator-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Show selected calculator
-            document.getElementById(calculatorId).classList.add('active');
-            
-            // Update button styles
-            document.querySelectorAll('.calculator-nav-btn').forEach(btn => {
-                btn.classList.remove('bg-purple-600', 'text-white');
-                btn.classList.add('bg-white', 'text-purple-600', 'border-2', 'border-purple-600');
-            });
-            
-            event.target.classList.remove('bg-white', 'text-purple-600', 'border-2', 'border-purple-600');
-            event.target.classList.add('bg-purple-600', 'text-white');
-        }
-
-        // Alimony Calculator
-        document.getElementById('alimony-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const income1 = parseFloat(document.getElementById('alimony-income1').value);
-            const income2 = parseFloat(document.getElementById('alimony-income2').value);
-            const duration = parseFloat(document.getElementById('alimony-duration').value);
-            const state = document.getElementById('alimony-state').value;
-            
-            // Simple calculation (this would be more complex in a real application)
-            const incomeDiff = Math.abs(income1 - income2);
-            let alimonyPercentage = 0.3; // Base 30%
-            
-            // Adjust based on marriage duration
-            if (duration > 10) alimonyPercentage = 0.35;
-            if (duration > 20) alimonyPercentage = 0.4;
-            
-            const monthlyAlimony = (incomeDiff * alimonyPercentage) / 12;
-            const durationYears = Math.min(duration * 0.5, duration); // Typically half the marriage duration
-            
-            const resultHTML = `
-                <div class="result-card p-6 rounded-lg">
-                    <h4 class="text-xl font-bold mb-4 text-gray-900">Estimated Alimony</h4>
-                    <div class="grid md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <p class="text-gray-600">Monthly Payment</p>
-                            <p class="text-3xl font-bold text-purple-600">$${monthlyAlimony.toFixed(2)}</p>
-                        </div>
-                        <div>
-                            <p class="text-gray-600">Estimated Duration</p>
-                            <p class="text-3xl font-bold text-purple-600">${durationYears.toFixed(1)} years</p>
-                        </div>
-                    </div>
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
-                        <p class="text-sm text-yellow-800">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            This is an estimate. Actual alimony varies by state law, individual circumstances, and judicial discretion. Consult with a divorce attorney for accurate calculations.
-                        </p>
-                    </div>
-                    <button onclick="openModal()" class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">
-                        Consult an Attorney
-                    </button>
-                </div>
-            `;
-            
-            document.getElementById('alimony-result').innerHTML = resultHTML;
-        });
-
-        // Child Support Calculator
-        document.getElementById('child-support-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const income1 = parseFloat(document.getElementById('cs-income1').value);
-            const income2 = parseFloat(document.getElementById('cs-income2').value);
-            const children = parseInt(document.getElementById('cs-children').value);
-            const custody = document.getElementById('cs-custody').value;
-            
-            const totalIncome = income1 + income2;
-            let supportPercentage = 0.17; // Base for 1 child
-            
-            // Adjust for number of children
-            if (children === 2) supportPercentage = 0.25;
-            if (children === 3) supportPercentage = 0.29;
-            if (children >= 4) supportPercentage = 0.31;
-            
-            // Adjust for custody
-            let custodyMultiplier = 1;
-            if (custody === 'joint') custodyMultiplier = 0.5;
-            if (custody === 'primary') custodyMultiplier = 0.75;
-            
-            const monthlySupport = (totalIncome * supportPercentage * custodyMultiplier);
-            const payerShare = income1 > income2 ? (income1 / totalIncome) : (income2 / totalIncome);
-            const finalSupport = monthlySupport * payerShare;
-            
-            const resultHTML = `
-                <div class="result-card p-6 rounded-lg">
-                    <h4 class="text-xl font-bold mb-4 text-gray-900">Estimated Child Support</h4>
-                    <div class="mb-4">
-                        <p class="text-gray-600">Monthly Payment</p>
-                        <p class="text-4xl font-bold text-purple-600">$${finalSupport.toFixed(2)}</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div class="bg-gray-50 p-3 rounded">
-                            <p class="text-sm text-gray-600">For ${children} ${children === 1 ? 'Child' : 'Children'}</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <p class="text-sm text-gray-600">${custody.charAt(0).toUpperCase() + custody.slice(1)} Custody</p>
-                        </div>
-                    </div>
-                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mt-4">
-                        <p class="text-sm text-blue-800">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            This calculation is based on income shares model. Actual child support includes additional factors like healthcare, childcare, and extraordinary expenses.
-                        </p>
-                    </div>
-                    <button onclick="openModal()" class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">
-                        Get Detailed Calculation
-                    </button>
-                </div>
-            `;
-            
-            document.getElementById('cs-result').innerHTML = resultHTML;
-        });
-
-        // Asset Division Calculator
-        document.getElementById('asset-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const homeValue = parseFloat(document.getElementById('asset-home').value) || 0;
-            const mortgage = parseFloat(document.getElementById('asset-mortgage').value) || 0;
-            const savings = parseFloat(document.getElementById('asset-savings').value) || 0;
-            const retirement = parseFloat(document.getElementById('asset-retirement').value) || 0;
-            const otherAssets = parseFloat(document.getElementById('asset-other').value) || 0;
-            const debts = parseFloat(document.getElementById('asset-debts').value) || 0;
-            const state = document.getElementById('asset-state').value;
-            
-            const homeEquity = homeValue - mortgage;
-            const totalAssets = homeEquity + savings + retirement + otherAssets;
-            const netWorth = totalAssets - debts;
-            
-            let division1, division2;
-            
-            if (state === 'community') {
-                // Community property: 50/50 split
-                division1 = netWorth / 2;
-                division2 = netWorth / 2;
-            } else {
-                // Equitable distribution: Can vary, using 60/40 as example
-                division1 = netWorth * 0.6;
-                division2 = netWorth * 0.4;
-            }
-            
-            const resultHTML = `
-                <div class="result-card p-6 rounded-lg">
-                    <h4 class="text-xl font-bold mb-4 text-gray-900">Asset Division Estimate</h4>
-                    <div class="mb-6">
-                        <p class="text-gray-600 mb-2">Total Marital Assets</p>
-                        <p class="text-3xl font-bold text-gray-900">$${totalAssets.toLocaleString()}</p>
-                    </div>
-                    <div class="mb-6">
-                        <p class="text-gray-600 mb-2">Total Debts</p>
-                        <p class="text-2xl font-bold text-red-600">-$${debts.toLocaleString()}</p>
-                    </div>
-                    <div class="border-t-2 border-gray-200 pt-4 mb-6">
-                        <p class="text-gray-600 mb-2">Net Marital Estate</p>
-                        <p class="text-4xl font-bold text-purple-600">$${netWorth.toLocaleString()}</p>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-4 mb-4">
-                        <div class="bg-purple-50 p-4 rounded-lg">
-                            <p class="text-sm text-gray-600 mb-1">Your Share</p>
-                            <p class="text-2xl font-bold text-purple-600">$${division1.toLocaleString()}</p>
-                        </div>
-                        <div class="bg-gray-100 p-4 rounded-lg">
-                            <p class="text-sm text-gray-600 mb-1">Spouse's Share</p>
-                            <p class="text-2xl font-bold text-gray-700">$${division2.toLocaleString()}</p>
-                        </div>
-                    </div>
-                    <div class="bg-purple-50 border-l-4 border-purple-400 p-4 mt-4">
-                        <p class="text-sm text-purple-800">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            ${state === 'community' ? 'Community property states typically divide assets 50/50.' : 'Equitable distribution considers various factors including income, contributions, and needs.'}
-                        </p>
-                    </div>
-                    <button onclick="openModal()" class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">
-                        Protect Your Assets
-                    </button>
-                </div>
-            `;
-            
-            document.getElementById('asset-result').innerHTML = resultHTML;
-        });
-
-        // Attorney Finder
-        document.getElementById('attorney-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const zip = document.getElementById('attorney-zip').value;
-            const concern = document.getElementById('attorney-concern').value;
-            
-            // Simulated attorney results
-            const attorneys = [
-                { name: 'Sarah Johnson, Esq.', rating: 4.9, cases: 250, specialty: 'Child Custody' },
-                { name: 'Michael Chen, Esq.', rating: 4.8, cases: 180, specialty: 'Asset Division' },
-                { name: 'Emily Rodriguez, Esq.', rating: 4.7, cases: 300, specialty: 'General Divorce' }
-            ];
-            
-            let resultHTML = '<h4 class="font-bold mb-4">Top Attorneys Near ' + zip + '</h4>';
-            
-            attorneys.forEach(attorney => {
-                resultHTML += `
-                    <div class="bg-white border-2 border-gray-200 rounded-lg p-4 mb-3 hover:border-purple-400 transition">
-                        <div class="flex justify-between items-start mb-2">
-                            <h5 class="font-bold">${attorney.name}</h5>
-                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">
-                                <i class="fas fa-star"></i> ${attorney.rating}
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-2">${attorney.specialty} • ${attorney.cases}+ cases</p>
-                        <button onclick="openModal()" class="text-purple-600 text-sm font-semibold hover:text-purple-700">
-                            View Profile →
-                        </button>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('attorney-results').innerHTML = resultHTML;
-        });
-
-        // Smooth scroll
+        // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    // Close mobile menu if open
-                    document.getElementById('mobile-menu').classList.add('hidden');
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('getStartedModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
         });
     </script>
 </body>
