@@ -1109,27 +1109,32 @@
                         current_situation: formData.get('userSituation')
                     };
 
-                    // Check if Supabase is properly configured
-                    if (!supabase) {
-                        console.warn('Supabase is not configured. Please add your SUPABASE_URL and SUPABASE_ANON_KEY.');
-                        closeModal();
-                        showNotification('Thank you! Please configure Supabase to save data.', 'error');
-                        return;
-                    }
-
                     try {
+                        if (!supabase) {
+                            showNotification('Please configure Supabase to save data.', 'error');
+                            return;
+                        }
+
                         const { data, error } = await supabase
                             .from('users')
-                            .insert([userData]);
+                            .insert([userData])
+                            .select();
 
-                        if (error) throw error;
+                        if (error) {
+                            if (error.code === '23505') {
+                                showNotification('This email is already registered!', 'error');
+                                closeModal();
+                                return;
+                            }
+                            throw error;
+                        }
 
-                        console.log('User data saved successfully');
+                        console.log('User data saved:', data);
                         closeModal();
                         showNotification('Thank you! Your information has been saved securely.', 'success');
                     } catch (error) {
-                        console.error('Error saving user data:', error);
-                        showNotification('There was an error saving your information. Please try again.', 'error');
+                        console.error('Error saving data:', error);
+                        showNotification('Error saving your information. Please try again.', 'error');
                     }
                 });
             }
