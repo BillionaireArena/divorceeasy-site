@@ -926,7 +926,8 @@
         </div>
     </footer>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
         // ##################################################################
         // ### SUPABASE SETUP INSTRUCTIONS ###
@@ -944,7 +945,14 @@
         // Supabase Configuration
         const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
         const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Initialize Supabase client only if credentials are configured
+        let supabase = null;
+        if (typeof window.supabase !== 'undefined' && 
+            SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL' && 
+            SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
         
         // --- GEMINI API CALL FUNCTION ---
         async function callGemini(prompt, elementToUpdate, loadingElement) {
@@ -1095,6 +1103,15 @@
                         current_situation: formData.get('userSituation'),
                         created_at: new Date().toISOString()
                     };
+
+                    // Check if Supabase is properly configured
+                    if (!supabase) {
+                        console.warn('Supabase is not configured. Please add your SUPABASE_URL and SUPABASE_ANON_KEY.');
+                        console.log('User Details (not saved):', userData);
+                        closeModal();
+                        showNotification('Thank you! Please configure Supabase to save data.', 'error');
+                        return;
+                    }
 
                     try {
                         const { data, error } = await supabase
@@ -1587,8 +1604,6 @@
         }
 
     </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
 
