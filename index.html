@@ -7,6 +7,7 @@
     <title>Divorceeasy - Complete Website</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         /* General Styles */
@@ -928,6 +929,75 @@
 
 
     <script>
+        // --- SUPABASE INITIALIZATION ---
+        const SUPABASE_URL = 'https://lbdaagfdfmeqitwijilr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxiZGFhZ2ZkZm1lcWl0d2lqaWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MjQ3MzcsImV4cCI6MjA4MjQwMDczN30.5NV-eB2XxwJ6RhDdia3pPu4sW_m3VGW5eqyMI48EJLo';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // --- SUPABASE TRACKING FUNCTIONS ---
+        async function saveCalculatorResult(calculatorType, inputs, results) {
+            const userEmail = localStorage.getItem('userEmail');
+            if (!userEmail) return; // Skip if user not registered
+
+            try {
+                const { error } = await supabase
+                    .from('calculator_results')
+                    .insert([{
+                        user_email: userEmail,
+                        calculator_type: calculatorType,
+                        inputs: inputs,
+                        results: results,
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) throw error;
+                console.log(`${calculatorType} calculation saved`);
+            } catch (error) {
+                console.error('Error saving calculation:', error);
+            }
+        }
+
+        async function saveAIInteraction(interactionType, question, response) {
+            const userEmail = localStorage.getItem('userEmail');
+            
+            try {
+                const { error } = await supabase
+                    .from('ai_interactions')
+                    .insert([{
+                        user_email: userEmail,
+                        interaction_type: interactionType,
+                        question: question,
+                        response: response,
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) throw error;
+                console.log('AI interaction saved');
+            } catch (error) {
+                console.error('Error saving AI interaction:', error);
+            }
+        }
+
+        async function saveLawyerSearch(country, location) {
+            const userEmail = localStorage.getItem('userEmail');
+            
+            try {
+                const { error } = await supabase
+                    .from('lawyer_searches')
+                    .insert([{
+                        user_email: userEmail,
+                        country: country,
+                        location: location,
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) throw error;
+                console.log('Lawyer search saved');
+            } catch (error) {
+                console.error('Error saving lawyer search:', error);
+            }
+        }
+
         // --- GEMINI API CALL FUNCTION ---
         async function callGemini(prompt, elementToUpdate, loadingElement) {
             if (loadingElement) loadingElement.classList.remove('hidden');
@@ -1068,14 +1138,47 @@
                     }
                 });
 
-                form.addEventListener('submit', (e) => {
+                form.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const formData = new FormData(form);
-                    const userData = Object.fromEntries(formData.entries());
-                    console.log('User Details:', userData);
-                    // Here you would typically send this data to a server
-                    closeModal();
-                    showNotification('Thank you! Your information has been received.', 'success');
+                    const userData = {
+                        name: formData.get('userName'),
+                        email: formData.get('userEmail'),
+                        situation: formData.get('userSituation'),
+                        created_at: new Date().toISOString()
+                    };
+
+                    try {
+                        // Insert into Supabase
+                        const { data, error } = await supabase
+                            .from('users')
+                            .insert([userData])
+                            .select();
+
+                        if (error) {
+                            // Check for duplicate email
+                            if (error.code === '23505') {
+                                showNotification('This email is already registered. Welcome back!', 'error');
+                                closeModal();
+                                // Store in localStorage for session
+                                localStorage.setItem('userEmail', userData.email);
+                                return;
+                            }
+                            throw error;
+                        }
+
+                        console.log('User data saved successfully:', data);
+                        
+                        // Store in localStorage
+                        localStorage.setItem('userEmail', userData.email);
+                        localStorage.setItem('userName', userData.name);
+                        
+                        closeModal();
+                        showNotification('Thank you! Your information has been saved securely.', 'success');
+                    } catch (error) {
+                        console.error('Error saving user data:', error);
+                        showNotification('There was an error. Please try again.', 'error');
+                    }
                 });
             }
         }
@@ -1206,6 +1309,17 @@
             calculationResults.alimony = finalAlimony;
             
             document.getElementById('alimony-result').textContent = formatCurrency(finalAlimony);
+
+            // Save to Supabase
+            saveCalculatorResult('alimony', {
+                yourIncome: yourIncome,
+                partnerIncome: partnerIncome,
+                yearsMarried: yearsMarried,
+                hasChildren: hasChildren,
+                currency: currentCurrency
+            }, {
+                alimony: finalAlimony
+            });
         }
 
         function calculateAssets() {
@@ -1231,6 +1345,16 @@
 
             document.getElementById('assets-your-share').textContent = `Your Share: ${formatCurrency(yourTotalShare)}`;
             document.getElementById('assets-partner-share').textContent = `Partner's Share: ${formatCurrency(partnerTotalShare)}`;
+
+            // Save to Supabase
+            saveCalculatorResult('assets', {
+                totalAssets: totalAssets,
+                individualPercent: individualPercent,
+                currency: currentCurrency
+            }, {
+                yourShare: yourTotalShare,
+                partnerShare: partnerTotalShare
+            });
         }
 
         function setChildrenCount(count, event) {
@@ -1267,6 +1391,16 @@
             calculationResults.childSupport = supportObligation;
             
             document.getElementById('child-support-result').textContent = formatCurrency(supportObligation);
+
+            // Save to Supabase
+            saveCalculatorResult('child_support', {
+                yourIncome: yourIncome,
+                partnerIncome: partnerIncome,
+                childrenCount: selectedChildrenCount,
+                currency: currentCurrency
+            }, {
+                supportObligation: supportObligation
+            });
         }
 
         async function getAIRecommendations() {
@@ -1288,6 +1422,11 @@
             
             await callGemini(prompt, contentDiv, loadingDiv);
             resultsDiv.classList.remove('hidden');
+
+            // Save AI interaction to Supabase (after callGemini completes)
+            if (contentDiv.innerHTML) {
+                saveAIInteraction('calculator_recommendations', prompt, contentDiv.innerHTML);
+            }
         }
 
 
@@ -1325,6 +1464,7 @@
 
         function legalHelp_handleFindLawyers() {
             const location = document.getElementById('legal-locationSelect').value;
+            const country = document.getElementById('legal-countrySelect').value;
             const resultsContainer = document.getElementById('lawyerResults');
             resultsContainer.innerHTML = '';
             
@@ -1353,6 +1493,9 @@
             } else {
                 resultsContainer.innerHTML = '<div class="bg-gray-50 rounded-2xl p-6 text-center"><p class="text-gray-600">No lawyers found for this location in our sample data. Try another location.</p></div>';
             }
+
+            // Save lawyer search to Supabase
+            saveLawyerSearch(country, location);
         }
 
         async function legalHelp_handleAskAI() {
@@ -1387,6 +1530,11 @@
 
             aiMessage.innerHTML = `<p class="text-gray-800"><strong class="text-indigo-600">AI Assistant:</strong> ${responseContainer.innerHTML}</p>`;
             chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Save AI interaction to Supabase (after callGemini completes)
+            if (responseContainer.innerHTML) {
+                saveAIInteraction('legal_help_chat', question, responseContainer.innerHTML);
+            }
         }
 
         // --- ASSET PROTECTION PAGE SCRIPT ---
@@ -1486,6 +1634,12 @@
             const prompt = `You are an AI assistant specializing in legal-financial strategies for divorce. A user received the following initial advice: "${initialStrategy}". Now, they have a follow-up question: "${question}". Please provide a clear, concise answer related to their initial advice. Remember to include a disclaimer that this is not legal advice.`;
 
             await callGemini(prompt, answerDiv, null);
+            
+            // Save AI interaction to Supabase (after callGemini completes)
+            if (answerDiv.innerHTML) {
+                saveAIInteraction('asset_protection_followup', question, answerDiv.innerHTML);
+            }
+            
             questionInput.value = '';
         }
 
@@ -1549,6 +1703,12 @@
             const prompt = `You are a compassionate AI mental wellness guide. A user has been given the following suggestions: "${initialSuggestions}". They have a follow-up question: "${question}". Please provide a supportive, actionable, and encouraging response. Do not give medical advice. Include a disclaimer that you are not a therapist and professional help is recommended for serious issues.`;
 
             await callGemini(prompt, answerDiv, null);
+            
+            // Save AI interaction to Supabase (after callGemini completes)
+            if (answerDiv.innerHTML) {
+                saveAIInteraction('mental_health_followup', question, answerDiv.innerHTML);
+            }
+            
             questionInput.value = '';
         }
 
