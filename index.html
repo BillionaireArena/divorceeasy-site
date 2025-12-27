@@ -948,18 +948,59 @@
         // ##################################################################
         
         // Supabase Configuration
-        const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const SUPABASE_URL = 'https://lbdaagfdfmeqitwijilr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxiZGFhZ2ZkZm1lcWl0d2lqaWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MjQ3MzcsImV4cCI6MjA4MjQwMDczN30.5NV-eB2XxwJ6RhDdia3pPu4sW_m3VGW5eqyMI48EJLo';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // Initialize Supabase client only if credentials are configured
-        let supabase = null;
-        if (typeof window.supabase !== 'undefined' && 
-            typeof window.supabase.createClient === 'function' &&
-            SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL' && 
-            SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // --- SUPABASE TRACKING FUNCTIONS ---
+        async function saveCalculatorResult(type, inputs, results) {
+            const userEmail = localStorage.getItem('userEmail');
+            if (!userEmail) return;
+
+            try {
+                await supabase.from('calculator_results').insert([{
+                    user_email: userEmail,
+                    calculator_type: type,
+                    inputs: inputs,
+                    results: results
+                }]);
+                console.log(`${type} calculation saved`);
+            } catch (error) {
+                console.error('Error saving calculation:', error);
+            }
         }
-        
+
+        async function saveAIInteraction(type, question, response) {
+            const userEmail = localStorage.getItem('userEmail');
+
+            try {
+                await supabase.from('ai_interactions').insert([{
+                    user_email: userEmail,
+                    interaction_type: type,
+                    question: question,
+                    response: response
+                }]);
+                console.log('AI interaction saved');
+            } catch (error) {
+                console.error('Error saving AI interaction:', error);
+            }
+        }
+
+        async function saveLawyerSearch(country, location) {
+            const userEmail = localStorage.getItem('userEmail');
+
+            try {
+                await supabase.from('lawyer_searches').insert([{
+                    user_email: userEmail,
+                    country: country,
+                    location: location
+                }]);
+                console.log('Lawyer search saved');
+            } catch (error) {
+                console.error('Error saving search:', error);
+            }
+        }
+
         // --- GEMINI API CALL FUNCTION ---
         async function callGemini(prompt, elementToUpdate, loadingElement) {
             if (loadingElement) loadingElement.classList.remove('hidden');
@@ -1104,32 +1145,35 @@
                     e.preventDefault();
                     const formData = new FormData(form);
                     const userData = {
-                        full_name: formData.get('userName'),
+                        name: formData.get('userName'),
                         email: formData.get('userEmail'),
-                        current_situation: formData.get('userSituation')
+                        situation: formData.get('userSituation')
                     };
-
-                    // Check if Supabase is properly configured
-                    if (!supabase) {
-                        console.warn('Supabase is not configured. Please add your SUPABASE_URL and SUPABASE_ANON_KEY.');
-                        closeModal();
-                        showNotification('Thank you! Please configure Supabase to save data.', 'error');
-                        return;
-                    }
 
                     try {
                         const { data, error } = await supabase
                             .from('users')
-                            .insert([userData]);
+                            .insert([userData])
+                            .select();
 
-                        if (error) throw error;
+                        if (error) {
+                            if (error.code === '23505') {
+                                showNotification('This email is already registered!', 'error');
+                                localStorage.setItem('userEmail', userData.email);
+                                closeModal();
+                                return;
+                            }
+                            throw error;
+                        }
 
-                        console.log('User data saved successfully');
+                        localStorage.setItem('userEmail', userData.email);
+                        localStorage.setItem('userName', userData.name);
+                        console.log('User registered:', data);
                         closeModal();
-                        showNotification('Thank you! Your information has been saved securely.', 'success');
+                        showNotification('Welcome! Your information has been saved.', 'success');
                     } catch (error) {
-                        console.error('Error saving user data:', error);
-                        showNotification('There was an error saving your information. Please try again.', 'error');
+                        console.error('Registration error:', error);
+                        showNotification('Error saving your information. Please try again.', 'error');
                     }
                 });
             }
@@ -1261,6 +1305,13 @@
             calculationResults.alimony = finalAlimony;
             
             document.getElementById('alimony-result').textContent = formatCurrency(finalAlimony);
+            
+            // Save to Supabase
+            saveCalculatorResult('alimony', {
+                yourIncome, partnerIncome, yearsMarried, hasChildren, currency: currentCurrency
+            }, {
+                alimony: finalAlimony
+            });
         }
 
         function calculateAssets() {
@@ -1286,6 +1337,14 @@
 
             document.getElementById('assets-your-share').textContent = `Your Share: ${formatCurrency(yourTotalShare)}`;
             document.getElementById('assets-partner-share').textContent = `Partner's Share: ${formatCurrency(partnerTotalShare)}`;
+            
+            // Save to Supabase
+            saveCalculatorResult('assets', {
+                totalAssets, individualPercent, residence: document.getElementById('assets-residence').value, currency: currentCurrency
+            }, {
+                yourShare: yourTotalShare,
+                partnerShare: partnerTotalShare
+            });
         }
 
         function setChildrenCount(count, event) {
@@ -1322,6 +1381,13 @@
             calculationResults.childSupport = supportObligation;
             
             document.getElementById('child-support-result').textContent = formatCurrency(supportObligation);
+            
+            // Save to Supabase
+            saveCalculatorResult('child_support', {
+                yourIncome, partnerIncome, childrenCount: selectedChildrenCount, currency: currentCurrency
+            }, {
+                support: supportObligation
+            });
         }
 
         async function getAIRecommendations() {
@@ -1343,6 +1409,9 @@
             
             await callGemini(prompt, contentDiv, loadingDiv);
             resultsDiv.classList.remove('hidden');
+            
+            // Save AI interaction to Supabase
+            saveAIInteraction('recommendations', JSON.stringify(calculationResults), contentDiv.innerHTML);
         }
 
 
@@ -1379,6 +1448,7 @@
         }
 
         function legalHelp_handleFindLawyers() {
+            const country = document.getElementById('legal-countrySelect').value;
             const location = document.getElementById('legal-locationSelect').value;
             const resultsContainer = document.getElementById('lawyerResults');
             resultsContainer.innerHTML = '';
@@ -1387,6 +1457,9 @@
                 showNotification("Please select a location.", 'error');
                 return;
             }
+
+            // Save lawyer search to Supabase
+            saveLawyerSearch(country, location);
 
             const lawyers = legal_lawyerDatabase[location] || [];
 
@@ -1442,6 +1515,9 @@
 
             aiMessage.innerHTML = `<p class="text-gray-800"><strong class="text-indigo-600">AI Assistant:</strong> ${responseContainer.innerHTML}</p>`;
             chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // Save AI interaction to Supabase
+            saveAIInteraction('legal_help', question, responseContainer.innerHTML);
         }
 
         // --- ASSET PROTECTION PAGE SCRIPT ---
