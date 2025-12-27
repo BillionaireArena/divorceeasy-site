@@ -1112,7 +1112,6 @@
                     // Check if Supabase is properly configured
                     if (!supabase) {
                         console.warn('Supabase is not configured. Please add your SUPABASE_URL and SUPABASE_ANON_KEY.');
-                        console.log('User Details (not saved):', userData);
                         closeModal();
                         showNotification('Thank you! Please configure Supabase to save data.', 'error');
                         return;
