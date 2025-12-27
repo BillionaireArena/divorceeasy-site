@@ -928,6 +928,24 @@
 
 
     <script>
+        // ##################################################################
+        // ### SUPABASE SETUP INSTRUCTIONS ###
+        // ### 1. Sign up at https://supabase.com ###
+        // ### 2. Create a new project ###
+        // ### 3. Create a 'users' table with columns: ###
+        // ###    - id (uuid, primary key, default: uuid_generate_v4()) ###
+        // ###    - full_name (text) ###
+        // ###    - email (text) ###
+        // ###    - current_situation (text) ###
+        // ###    - created_at (timestamp with time zone) ###
+        // ### 4. Replace SUPABASE_URL and SUPABASE_ANON_KEY below ###
+        // ##################################################################
+        
+        // Supabase Configuration
+        const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
         // --- GEMINI API CALL FUNCTION ---
         async function callGemini(prompt, elementToUpdate, loadingElement) {
             if (loadingElement) loadingElement.classList.remove('hidden');
@@ -1068,14 +1086,30 @@
                     }
                 });
 
-                form.addEventListener('submit', (e) => {
+                form.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const formData = new FormData(form);
-                    const userData = Object.fromEntries(formData.entries());
-                    console.log('User Details:', userData);
-                    // Here you would typically send this data to a server
-                    closeModal();
-                    showNotification('Thank you! Your information has been received.', 'success');
+                    const userData = {
+                        full_name: formData.get('userName'),
+                        email: formData.get('userEmail'),
+                        current_situation: formData.get('userSituation'),
+                        created_at: new Date().toISOString()
+                    };
+
+                    try {
+                        const { data, error } = await supabase
+                            .from('users')
+                            .insert([userData]);
+
+                        if (error) throw error;
+
+                        console.log('User data saved successfully:', data);
+                        closeModal();
+                        showNotification('Thank you! Your information has been saved securely.', 'success');
+                    } catch (error) {
+                        console.error('Error saving user data:', error);
+                        showNotification('There was an error saving your information. Please try again.', 'error');
+                    }
                 });
             }
         }
@@ -1553,6 +1587,8 @@
         }
 
     </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
 
