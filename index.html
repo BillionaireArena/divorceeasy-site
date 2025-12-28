@@ -1080,6 +1080,32 @@
             const initialHash = window.location.hash.substring(1);
             showSection(document.getElementById(initialHash) ? initialHash : 'home');
 
+            // Mobile Menu Functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            if (mobileMenuBtn && mobileMenu && closeMobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('hidden');
+                });
+                
+                closeMobileMenu.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+                
+                mobileNavLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        mobileMenu.classList.add('hidden');
+                        const targetId = link.getAttribute('href').substring(1);
+                        showSection(targetId);
+                        window.history.pushState(null, '', '#' + targetId);
+                    });
+                });
+            }
+
             // Initialize all page-specific scripts
             initModal();
             initCalculatorScript();
@@ -1129,34 +1155,6 @@
                 });
             }
         }
-
-
-        // Mobile Menu Functionality
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-
-        if (mobileMenuBtn && mobileMenu && closeMobileMenu) {
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.remove('hidden');
-            });
-            
-            closeMobileMenu.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-            
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    mobileMenu.classList.add('hidden');
-                    const targetId = link.getAttribute('href').substring(1);
-                    showSection(targetId);
-                    window.history.pushState(null, '', '#' + targetId);
-                });
-            });
-        }
-
 
         // --- PAGE-SPECIFIC SCRIPT INITIALIZERS ---
         function initCalculatorScript() {
