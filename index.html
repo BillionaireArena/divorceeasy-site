@@ -259,6 +259,43 @@
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
+        
+        /* Mobile-specific fixes */
+        @media (max-width: 768px) {
+            /* Reduce padding on mobile */
+            .section-spacing { padding: 60px 0; }
+            
+            /* Stack grids vertically */
+            .grid { grid-template-columns: 1fr !important; }
+            
+            /* Smaller hero text */
+            h1 { font-size: 2rem !important; }
+            h2 { font-size: 1.75rem !important; }
+            
+            /* Better spacing */
+            .px-6 { padding-left: 1rem; padding-right: 1rem; }
+            .py-24 { padding-top: 3rem; padding-bottom: 3rem; }
+            .py-32 { padding-top: 4rem; padding-bottom: 4rem; }
+            
+            /* Touch-friendly buttons */
+            button, .btn-primary { 
+                min-height: 48px; 
+                padding: 12px 24px;
+            }
+            
+            /* Better form inputs */
+            input, select, textarea { 
+                font-size: 16px; /* Prevents zoom on iOS */
+                min-height: 48px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            /* Even smaller screens */
+            .text-6xl { font-size: 2rem; }
+            .text-5xl { font-size: 1.75rem; }
+            .text-4xl { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -276,11 +313,32 @@
                     <a href="#mental-health" class="nav-link text-gray-700 hover:text-indigo-600 transition-all duration-300 font-medium">Mental Health</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button id="getStartedBtn" class="btn-primary text-white px-6 py-3 rounded-xl font-semibold elegant-shadow">Find Your Path Forward</button>
+                    <button id="mobileMenuBtn" class="md:hidden text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <button id="getStartedBtn" class="btn-primary text-white px-6 py-3 rounded-xl font-semibold elegant-shadow hidden md:block">Find Your Path Forward</button>
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden fixed inset-0 z-40 bg-white">
+        <div class="flex flex-col p-6">
+            <button id="closeMobileMenu" class="self-end mb-6">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <a href="#home" class="mobile-nav-link py-4 text-lg font-medium border-b">Home</a>
+            <a href="#calculators" class="mobile-nav-link py-4 text-lg font-medium border-b">Calculators</a>
+            <a href="#legal-help" class="mobile-nav-link py-4 text-lg font-medium border-b">Legal Help</a>
+            <a href="#asset-protection" class="mobile-nav-link py-4 text-lg font-medium border-b">Protect Assets</a>
+            <a href="#mental-health" class="mobile-nav-link py-4 text-lg font-medium">Mental Health</a>
+        </div>
+    </div>
 
     <main>
         <div id="home" class="page-section active">
@@ -288,10 +346,10 @@
                 <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
                     <div class="flex flex-col items-center gap-16">
                         <div class="space-y-8">
-                            <h1 class="text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-center" style="white-space: nowrap;">
+                            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-center">
                                 You Don't Have to Navigate This Alone
                             </h1>
-                            <p class="text-xl lg:text-2xl text-white/90 leading-relaxed max-w-2xl text-center ml-28" style="white-space: nowrap;">
+                            <p class="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed max-w-2xl text-center mx-auto">
                                 Private tools and guidance for one of life's hardest transitions. No judgment. Just clarity.
                             </p>
                         </div>
@@ -552,11 +610,11 @@
                                  </div>
                                  <div>
                                      <label class="block text-sm font-semibold text-gray-800 mb-3">Number of Children</label>
-                                     <div class="flex space-x-4">
-                                         <button onclick="setChildrenCount(1, event)" class="child-count-btn w-12 h-12 border-2 border-indigo-500 bg-indigo-50 rounded-xl font-semibold">1</button>
-                                         <button onclick="setChildrenCount(2, event)" class="child-count-btn w-12 h-12 border-2 border-gray-200 rounded-xl font-semibold">2</button>
-                                         <button onclick="setChildrenCount(3, event)" class="child-count-btn w-12 h-12 border-2 border-gray-200 rounded-xl font-semibold">3</button>
-                                         <button onclick="setChildrenCount(4, event)" class="child-count-btn w-12 h-12 border-2 border-gray-200 rounded-xl font-semibold">4+</button>
+                                     <div class="flex flex-wrap gap-2 md:gap-4 justify-center md:justify-start">
+                                         <button onclick="setChildrenCount(1, event)" class="child-count-btn flex-shrink-0 w-12 h-12 border-2 border-indigo-500 bg-indigo-50 rounded-xl font-semibold">1</button>
+                                         <button onclick="setChildrenCount(2, event)" class="child-count-btn flex-shrink-0 w-12 h-12 border-2 border-gray-200 rounded-xl font-semibold">2</button>
+                                         <button onclick="setChildrenCount(3, event)" class="child-count-btn flex-shrink-0 w-12 h-12 border-2 border-gray-200 rounded-xl font-semibold">3</button>
+                                         <button onclick="setChildrenCount(4, event)" class="child-count-btn flex-shrink-0 w-12 h-12 border-2 border-gray-200 rounded-xl font-semibold">4+</button>
                                      </div>
                                  </div>
                                  <button onclick="calculateChildSupport()" class="btn-primary w-full text-white py-4 rounded-xl font-bold text-lg">Estimate Support</button>
@@ -855,7 +913,7 @@
     </main>
 
     <div id="getStartedModal" class="modal fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full m-4 relative transform transition-all">
+        <div class="bg-white rounded-2xl p-6 md:p-8 max-w-md w-full mx-4 relative transform transition-all max-h-[90vh] overflow-y-auto">
             <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -1084,6 +1142,33 @@
                     showNotification('Thank you for your interest! You can now explore all our tools.', 'success');
                 });
             }
+        }
+
+
+        // Mobile Menu Functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        if (mobileMenuBtn && mobileMenu && closeMobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.remove('hidden');
+            });
+            
+            closeMobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+            
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    mobileMenu.classList.add('hidden');
+                    const targetId = link.getAttribute('href').substring(1);
+                    showSection(targetId);
+                    window.history.pushState(null, '', '#' + targetId);
+                });
+            });
         }
 
 
