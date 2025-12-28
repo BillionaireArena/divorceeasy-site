@@ -951,14 +951,39 @@
         const SUPABASE_URL = 'https://lbdaagfdfmeqitwijilr.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxiZGFhZ2ZkZm1lcWl0d2lqaWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MjQ3MzcsImV4cCI6MjA4MjQwMDczN30.5NV-eB2XxwJ6RhDdia3pPu4sW_m3VGW5eqyMI48EJLo';
         
-        // Initialize Supabase client only if credentials are configured
+        // Initialize Supabase client with diagnostic logging
         let supabase = null;
+
+        console.log('=== SUPABASE DIAGNOSTIC START ===');
+        console.log('1. window.supabase exists?', typeof window.supabase !== 'undefined');
+        console.log('2. window.supabase value:', window.supabase);
+        console.log('3. createClient function exists?', typeof window.supabase?.createClient === 'function');
+        console.log('4. SUPABASE_URL:', SUPABASE_URL);
+        console.log('5. SUPABASE_ANON_KEY (first 50 chars):', SUPABASE_ANON_KEY.substring(0, 50) + '...');
+
         if (typeof window.supabase !== 'undefined' && 
             typeof window.supabase.createClient === 'function' &&
             SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL' && 
             SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            try {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('6. ✅ Supabase client created successfully:', supabase);
+            } catch (error) {
+                console.error('7. ❌ Error creating Supabase client:', error);
+            }
+        } else {
+            console.error('8. ❌ Supabase initialization failed - condition check failed');
+            if (typeof window.supabase === 'undefined') {
+                console.error('   - window.supabase is undefined (CDN script may not have loaded)');
+            }
+            if (typeof window.supabase?.createClient !== 'function') {
+                console.error('   - createClient is not a function');
+            }
         }
+
+        console.log('9. Final supabase value:', supabase);
+        console.log('=== SUPABASE DIAGNOSTIC END ===');
         
         // --- GEMINI API CALL FUNCTION ---
         async function callGemini(prompt, elementToUpdate, loadingElement) {
