@@ -985,18 +985,24 @@
     </footer>
 
     <script>
-        // --- GEMINI API CALL FUNCTION (Updated to use backend proxy) ---
+        // --- GEMINI API CONFIGURATION ---
+        const GEMINI_API_KEY = 'AIzaSyBpLsGqjOgg-GXE4hc4xCY6uwl3bp9uE20';
+        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
+
+        // --- GEMINI API CALL FUNCTION (Client-Side) ---
         async function callGemini(prompt, elementToUpdate, loadingElement) {
             if (loadingElement) loadingElement.classList.remove('hidden');
             if (elementToUpdate) elementToUpdate.classList.add('hidden');
             
-            // Call YOUR backend proxy instead of Gemini directly
-            const apiUrl = 'https://divorceeasy.thefuturesmachines.com/api/gemini.php';
-            
-            const payload = { prompt: prompt };
+            const payload = {
+                contents: [{
+                    role: 'user',
+                    parts: [{ text: prompt }]
+                }]
+            };
 
             try {
-                const response = await fetch(apiUrl, {
+                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
