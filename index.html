@@ -926,39 +926,7 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin="anonymous"></script>
-    
     <script>
-        // ##################################################################
-        // ### SUPABASE SETUP INSTRUCTIONS ###
-        // ### 1. Sign up at https://supabase.com ###
-        // ### 2. Create a new project ###
-        // ### 3. Create a 'users' table with columns: ###
-        // ###    - id (uuid, primary key, default: uuid_generate_v4()) ###
-        // ###    - full_name (text) ###
-        // ###    - email (text) ###
-        // ###    - current_situation (text) ###
-        // ###    - created_at (timestamp with time zone) ###
-        // ### 4. Replace SUPABASE_URL and SUPABASE_ANON_KEY below ###
-        // ### ###
-        // ### SECURITY NOTE: These keys are visible to all users. ###
-        // ### The ANON_KEY is safe to expose as it only grants ###
-        // ### public access. Use Row Level Security (RLS) policies ###
-        // ### in Supabase to protect your data. ###
-        // ##################################################################
-        
-        // Supabase Configuration
-        const SUPABASE_URL = 'https://lbdaagfdfmeqitwijilr.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxiZGFhZ2ZkZm1lcWl0d2lqaWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MjQ3MzcsImV4cCI6MjA4MjQwMDczN30.5NV-eB2XxwJ6RhDdia3pPu4sW_m3VGW5eqyMI48EJLo';
-        
-        // Initialize Supabase client
-        let supabase = null;
-
-        if (typeof window.supabase !== 'undefined' && typeof window.supabase.createClient === 'function') {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log('Supabase initialized successfully');
-        }
-        
         // --- GEMINI API CALL FUNCTION ---
         async function callGemini(prompt, elementToUpdate, loadingElement) {
             if (loadingElement) loadingElement.classList.remove('hidden');
@@ -1108,33 +1076,12 @@
                         current_situation: formData.get('userSituation')
                     };
 
-                    try {
-                        if (!supabase) {
-                            showNotification('Please configure Supabase to save data.', 'error');
-                            return;
-                        }
-
-                        const { data, error } = await supabase
-                            .from('users')
-                            .insert([userData])
-                            .select();
-
-                        if (error) {
-                            if (error.code === '23505') {
-                                showNotification('This email is already registered!', 'error');
-                                closeModal();
-                                return;
-                            }
-                            throw error;
-                        }
-
-                        console.log('User data saved:', data);
-                        closeModal();
-                        showNotification('Thank you! Your information has been saved securely.', 'success');
-                    } catch (error) {
-                        console.error('Error saving data:', error);
-                        showNotification('Error saving your information. Please try again.', 'error');
-                    }
+                    // Log form data to console (no database integration)
+                    console.log('Form submitted with data:', userData);
+                    
+                    // Close modal and show success notification
+                    closeModal();
+                    showNotification('Thank you for your interest! You can now explore all our tools.', 'success');
                 });
             }
         }
