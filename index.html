@@ -985,29 +985,15 @@
     </footer>
 
     <script>
-        // --- GEMINI API CALL FUNCTION ---
+        // --- GEMINI API CALL FUNCTION (Updated to use backend proxy) ---
         async function callGemini(prompt, elementToUpdate, loadingElement) {
             if (loadingElement) loadingElement.classList.remove('hidden');
             if (elementToUpdate) elementToUpdate.classList.add('hidden');
             
-            // ##################################################################
-            // ### GET YOUR FREE GEMINI API KEY: https://aistudio.google.com/app/apikey ###
-            // ### PASTE YOUR API KEY IN THE LINE BELOW ###
-            // ##################################################################
-            const apiKey = "AIzaSyBx2NJi558kdXXxGz37CslT-UL24FLZ_4g"; // Replace with your own key from https://aistudio.google.com/app/apikey
-
-            if (!apiKey || apiKey === "YOUR_API_KEY_HERE") {
-                console.error("Gemini API key is missing.");
-                const errorMessage = "<strong>AI Feature Needs Setup:</strong> Get your free API key from <a href='https://aistudio.google.com/app/apikey' target='_blank' class='text-indigo-600 underline'>Google AI Studio</a> and add it to the script.";
-                if(elementToUpdate) elementToUpdate.innerHTML = errorMessage;
-                if (loadingElement) loadingElement.classList.add('hidden');
-                if(elementToUpdate) elementToUpdate.classList.remove('hidden');
-                return;
-            }
-
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            // Call YOUR backend proxy instead of Gemini directly
+            const apiUrl = 'https://divorceeasy.thefuturesmachines.com/api/gemini.php';
             
-            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+            const payload = { prompt: prompt };
 
             try {
                 const response = await fetch(apiUrl, {
@@ -1035,7 +1021,7 @@
                 }
             } catch (error) {
                 console.error("Error calling Gemini API:", error);
-                elementToUpdate.textContent = 'An error occurred while contacting the AI.';
+                elementToUpdate.textContent = 'An error occurred while contacting the AI. Please try again later.';
             } finally {
                 if (loadingElement) loadingElement.classList.add('hidden');
                 if (elementToUpdate) elementToUpdate.classList.remove('hidden');
