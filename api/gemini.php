@@ -32,6 +32,13 @@ $prompt = $input['prompt'];
 // ⚠️ IMPORTANT: Add your Gemini API key here (keep this file secure!)
 $apiKey = 'YOUR_GEMINI_API_KEY_HERE';
 
+// Validate API key is configured
+if ($apiKey === 'YOUR_GEMINI_API_KEY_HERE' || empty($apiKey)) {
+    http_response_code(500);
+    echo json_encode(['error' => 'API key not configured']);
+    exit();
+}
+
 // Gemini API endpoint
 $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' . $apiKey;
 
@@ -58,6 +65,16 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+// Check for cURL errors
+if ($response === false) {
+    $error = curl_error($ch);
+    curl_close($ch);
+    http_response_code(500);
+    echo json_encode(['error' => 'Failed to connect to AI service', 'details' => $error]);
+    exit();
+}
+
 curl_close($ch);
 
 // Return the response
